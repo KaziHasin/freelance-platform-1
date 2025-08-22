@@ -9,7 +9,7 @@ export interface IUser extends Document {
     phone?: string;
     passwordHash?: string;
     provider: Provider;
-    roles: Role[];
+    role: Role[];
     status: 'ACTIVE' | 'INACTIVE' | 'PENDING';
     lastLoginAt?: Date;
     createdAt: Date;
@@ -23,7 +23,7 @@ const userSchema = new Schema<IUser>(
         phone: { type: String, unique: true, sparse: true },
         passwordHash: { type: String },
         provider: { type: String, enum: ['local', 'google', 'phone'], required: true },
-        roles: {
+        role: {
             type: [String],
             enum: ['CLIENT', 'DEVELOPER', 'ADMIN'],
             default: ['CLIENT'],

@@ -11,8 +11,6 @@ export class UserService {
                 throw new Error('Email already exists');
             }
         }
-
-
         const toCreate = { ...data };
         if (data.password) {
             toCreate.passwordHash = await bcrypt.hash(data.password, 10);
