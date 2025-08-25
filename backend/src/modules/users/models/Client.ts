@@ -1,6 +1,6 @@
 import { Schema, model, Document, Types } from 'mongoose';
 
-export type PackageCode = 'BASIC' | 'STANDARD' | 'PREMIUM';
+export type PackageCode = 'FREE' | 'BASIC' | 'STANDARD' | 'PREMIUM';
 
 export interface IClient extends Document {
     userId: Types.ObjectId;
@@ -27,7 +27,7 @@ const clientSchema = new Schema<IClient>(
         activePackageSnapshot: {
             code: {
                 type: String,
-                enum: ['FREE','BASIC', 'STANDARD', 'PREMIUM'],
+                enum: ['FREE', 'BASIC', 'STANDARD', 'PREMIUM'],
             },
             projectsPerMonth: { type: Number },
             contactClicksPerProject: { type: Number },

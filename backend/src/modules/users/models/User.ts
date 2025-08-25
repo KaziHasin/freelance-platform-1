@@ -1,15 +1,16 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model, Document, Types } from 'mongoose';
 
 export type Role = 'CLIENT' | 'DEVELOPER' | 'ADMIN';
 export type Provider = 'local' | 'google' | 'phone';
 
 export interface IUser extends Document {
+    _id: Types.ObjectId;
     name: string,
     email?: string;
     phone?: string;
     passwordHash?: string;
     provider: Provider;
-    roles: Role[];
+    role: Role;
     status: 'ACTIVE' | 'INACTIVE' | 'PENDING';
     lastLoginAt?: Date;
     createdAt: Date;
@@ -23,10 +24,10 @@ const userSchema = new Schema<IUser>(
         phone: { type: String, unique: true, sparse: true },
         passwordHash: { type: String },
         provider: { type: String, enum: ['local', 'google', 'phone'], required: true },
-        roles: {
-            type: [String],
+        role: {
+            type: String,
             enum: ['CLIENT', 'DEVELOPER', 'ADMIN'],
-            default: ['CLIENT'],
+            default: 'CLIENT',
         },
         status: {
             type: String,

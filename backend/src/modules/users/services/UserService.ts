@@ -1,24 +1,36 @@
+import { ClientRepository } from '../repositories/ClientRepository';
 import { UserRepository } from '../repositories/UserRepository';
 import bcrypt from 'bcryptjs';
 
 export class UserService {
-    constructor(private repo = new UserRepository()) { }
+    constructor(private repo = new UserRepository(), private clientRepo = new ClientRepository()) { }
 
     async create(data: any) {
         if (data.email) {
             const existing = await this.repo.findOne({ email: data.email });
             if (existing) {
-                throw new Error('Email already exists');
+                const err: any = new Error('Email already exists');
+                err.field = 'email';
+                throw err;
             }
         }
-
-
         const toCreate = { ...data };
         if (data.password) {
             toCreate.passwordHash = await bcrypt.hash(data.password, 10);
             delete toCreate.password;
         }
-        return this.repo.create(toCreate);
+        const user = await this.repo.create(toCreate);
+        if (user.role === 'CLIENT') {
+            this.clientRepo.create({
+                userId: user._id,
+                activePackageSnapshot: {
+                    code: 'FREE',
+                    projectsPerMonth: null,
+                    contactClicksPerProject: null
+                }
+            });
+        }
+        return user;
     }
 
     get(id: string) {

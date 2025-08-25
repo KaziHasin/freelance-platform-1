@@ -11,7 +11,7 @@ export const CreateUserDto = z.object({
         phone: z.string().min(6).optional(),
         password: z.string().min(6).optional(),
         provider: ProviderEnum,
-        roles: z.array(RoleEnum).default(['CLIENT']),
+        role: RoleEnum.default('CLIENT'),
         status: StatusEnum.default('PENDING'),
     }),
 });
@@ -24,7 +24,7 @@ export const UpdateUserDto = z.object({
             email: z.string().email().optional(),
             phone: z.string().min(6).optional(),
             password: z.string().min(6).optional(),
-            roles: z.array(RoleEnum).optional(),
+            role: RoleEnum.optional(),
             status: StatusEnum.optional(),
             lastLoginAt: z.coerce.date().optional(),
         })

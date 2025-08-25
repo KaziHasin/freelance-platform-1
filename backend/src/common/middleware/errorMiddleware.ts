@@ -37,7 +37,7 @@ export function errorMiddleware(err: any, _req: Request, res: Response, _next: N
             details: [
 
                 {
-                    field: 'body.email',
+                    field: `body.${err.field}`,
                     message: err.message
                 }
             ]
