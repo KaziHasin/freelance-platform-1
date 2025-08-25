@@ -3,7 +3,7 @@ import express from "express";
 import helmet from "helmet";
 import cors from "cors";
 import usersRoutes from "./modules/users/routes";
-import projectRoutes from "./modules/project/routes";
+import projectRoutes from "./modules/projects/routes";
 import packagesRoutes from './modules/packages/routes';
 import { errorMiddleware } from "./common/middleware/errorMiddleware";
 
