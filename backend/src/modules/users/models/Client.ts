@@ -27,7 +27,7 @@ const clientSchema = new Schema<IClient>(
         activePackageSnapshot: {
             code: {
                 type: String,
-                enum: ['BASIC', 'STANDARD', 'PREMIUM'],
+                enum: ['FREE','BASIC', 'STANDARD', 'PREMIUM'],
             },
             projectsPerMonth: { type: Number },
             contactClicksPerProject: { type: Number },
