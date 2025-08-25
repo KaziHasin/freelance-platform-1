@@ -1,10 +1,10 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, model, Document, Types } from "mongoose";
 
 export interface IProject extends Document {
   title: string;
   description: string;
   skillsRequired: string[];
-  clientId: string;
+  clientId: Types.ObjectId;
   packageType: "Basic" | "Standard" | "Premium";
   agreementFileUrl?: string;
   createdAt: Date;

@@ -4,7 +4,6 @@ export class ProjectService {
   private projectRepo = new ProjectRepository();
 
   async createProject(data: any) {
-    // Add business logic if needed
     return this.projectRepo.create(data);
   }
 
@@ -15,11 +14,11 @@ export class ProjectService {
   async listProjects(q?: string, page = 1, limit = 20) {
     const filter = q
       ? {
-          $or: [
-            { title: new RegExp(q, "i") },
-            { description: new RegExp(q, "i") },
-          ],
-        }
+        $or: [
+          { title: new RegExp(q, "i") },
+          { description: new RegExp(q, "i") },
+        ],
+      }
       : {};
     const [items, total] = await Promise.all([
       this.projectRepo.find(filter, page, limit),
