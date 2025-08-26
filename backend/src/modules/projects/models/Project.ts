@@ -1,22 +1,25 @@
+import { DevLevel } from "@/common/types/enums";
 import { Schema, model, Document, Types } from "mongoose";
 
 export interface IProject extends Document {
   title: string;
   description: string;
-  skillsRequired: string[];
+  requiredSkillIds: Types.ObjectId[]
   clientId: Types.ObjectId;
+  preferredLevel?: DevLevel;
   packageType: "Basic" | "Standard" | "Premium";
   agreementFileUrl?: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
-const ProjectSchema = new Schema<IProject>(
+const projectSchema = new Schema<IProject>(
   {
     title: { type: String, required: true },
     description: { type: String, required: true },
-    skillsRequired: [{ type: String, required: true }],
+    requiredSkillIds: [{ type: Schema.Types.ObjectId, ref: 'Skill', index: true }],
     clientId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    preferredLevel: { type: String, enum: Object.values(DevLevel), required: false },
     packageType: {
       type: String,
       enum: ["Basic", "Standard", "Premium"],
@@ -27,4 +30,4 @@ const ProjectSchema = new Schema<IProject>(
   { timestamps: true }
 );
 
-export default model<IProject>("Project", ProjectSchema);
+export const Project = model<IProject>('Project', projectSchema);

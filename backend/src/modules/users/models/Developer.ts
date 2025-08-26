@@ -1,7 +1,7 @@
 import { Schema, model, Document, Types } from 'mongoose';
+import { DevLevel, VerificationStatus } from '@/common/types/enums';
 
-export type VerificationStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
-export type DeveloperLevel = 'EXPERT' | 'MID' | 'FRESHER';
+
 
 export interface IDeveloper extends Document {
     userId: Types.ObjectId;
@@ -14,12 +14,12 @@ export interface IDeveloper extends Document {
         photoUrl?: string;
         bio?: string;
         experienceYears?: number;
-        skills: string[];
+        skills: Types.ObjectId[];
         linkedin?: string;
         portfolio?: string;
         whatsapp: string;
     };
-    level: DeveloperLevel;
+    level: DevLevel;
     rating: {
         avg: number;
         count: number;
@@ -35,8 +35,8 @@ const developerSchema = new Schema<IDeveloper>(
             docUrl: { type: String, required: true },
             status: {
                 type: String,
-                enum: ['PENDING', 'APPROVED', 'REJECTED'],
-                default: 'PENDING',
+                enum: Object.values(VerificationStatus),
+                default: VerificationStatus.PENDING,
             },
             reviewedBy: { type: Schema.Types.ObjectId, ref: 'User' },
         },
@@ -44,16 +44,19 @@ const developerSchema = new Schema<IDeveloper>(
             photoUrl: { type: String },
             bio: { type: String },
             experienceYears: { type: Number },
-            skills: { type: [String], default: [] },
+            skills: [{ type: Schema.Types.ObjectId, ref: 'Skill', index: true }],
             linkedin: { type: String },
             portfolio: { type: String },
             whatsapp: { type: String, required: true },
         },
         level: {
             type: String,
-            enum: ['EXPERT', 'MID', 'FRESHER'],
-            default: 'FRESHER',
+            required: true,
+            index: true,
+            enum: Object.values(DevLevel),
+            default: DevLevel.FRESHER,
         },
+
         rating: {
             avg: { type: Number, default: 0 },
             count: { type: Number, default: 0 },
