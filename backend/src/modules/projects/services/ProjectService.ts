@@ -1,10 +1,18 @@
+import { ClientRepository } from "@/modules/users/repositories/ClientRepository";
 import { ProjectRepository } from "../repositories/ProjectRepository";
+import { AssignmentRotationService } from "./AssignmentRotationService";
+import { SkillService } from "./SkillService";
+import { PackageRepository } from "@/modules/packages/repositories/PackageRepository";
 
 export class ProjectService {
-  private projectRepo = new ProjectRepository();
+
+  constructor(private projectRepo = new ProjectRepository(), private skillService = new SkillService(), private clientRepo = new ClientRepository(), private packageRepo = new PackageRepository()) { }
+
 
   async createProject(data: any) {
-    return this.projectRepo.create(data);
+    const requiredSkillIds = await this.skillService.resolveSkillIds(data.requiredSkillIds);
+    const toCreate = { ...data, requiredSkillIds };
+    return this.projectRepo.create(toCreate);
   }
 
   async getProject(id: string) {

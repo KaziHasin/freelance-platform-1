@@ -25,7 +25,7 @@ export const listClients = [
 ];
 
 export const getClient = asyncHandler(async (req: Request, res: Response) => {
-    const item = await service.get(req.params.id);
+    const item = await service.get(req.params.id as string);
     if (!item) return res.status(404).json({ error: 'Not Found' });
     res.json(item);
 });
@@ -33,14 +33,14 @@ export const getClient = asyncHandler(async (req: Request, res: Response) => {
 export const updateClient = [
     validate(UpdateClientDto),
     asyncHandler(async (req: Request, res: Response) => {
-        const updated = await service.update(req.params.id, req.body);
+        const updated = await service.update(req.params.id as string, req.body);
         if (!updated) return res.status(404).json({ error: 'Not Found' });
         res.json(updated);
     }),
 ];
 
 export const deleteClient = asyncHandler(async (req: Request, res: Response) => {
-    const deleted = await service.remove(req.params.id);
+    const deleted = await service.remove(req.params.id as string);
     if (!deleted) return res.status(404).json({ error: 'Not Found' });
     res.status(204).send();
 });

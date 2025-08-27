@@ -1,4 +1,5 @@
-import Project, { IProject } from "../models/Project";
+import { Project } from "../models/Project";
+import type { IProject } from "../models/Project";
 import { FilterQuery } from "mongoose";
 
 export class ProjectRepository {

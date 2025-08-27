@@ -16,3 +16,11 @@ export enum VerificationStatus {
     APPROVED = 'APPROVED',
     REJECTED = 'REJECTED'
 };
+
+
+export enum PackageCode {
+    FREE = 'FREE',
+    BASIC = 'BASIC',
+    STANDARD = 'STANDARD',
+    PREMIUM = 'PREMIUM',
+}

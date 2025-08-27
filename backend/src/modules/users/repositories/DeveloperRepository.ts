@@ -1,3 +1,4 @@
+import { DevLevel } from '@/common/types/enums';
 import { Developer } from '../models/Developer';
 import type { IDeveloper } from '../models/Developer';
 
@@ -23,5 +24,38 @@ export class DeveloperRepository {
     }
     delete(id: string) {
         return Developer.findByIdAndDelete(id);
+    }
+
+    /**
+     * Find candidate developers based on required skills and level
+     */
+    async candidates(
+        requiredSkillIds: string[],
+        level?: DevLevel,
+        excludeIds: string[] = []
+    ) {
+        const match: any = {
+            _id: { $nin: excludeIds }, // exclude already tried developers
+        };
+
+        if (level) {
+            match.level = level;
+        }
+
+        // Aggregate pipeline for skill matching
+        return Developer.aggregate([
+            { $match: match },
+            {
+                $addFields: {
+                    matchedSkills: {
+                        $size: {
+                            $setIntersection: ["$skills", requiredSkillIds],
+                        },
+                    },
+                },
+            },
+            { $match: { matchedSkills: { $gt: 0 } } }, // only keep those with at least 1 match
+            { $sort: { matchedSkills: -1, createdAt: -1 } }, // sort by most matches, then recency
+        ]);
     }
 }

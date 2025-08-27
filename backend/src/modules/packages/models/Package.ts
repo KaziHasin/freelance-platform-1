@@ -1,6 +1,6 @@
+import { PackageCode } from '@/common/types/enums';
 import { Schema, model, Document } from 'mongoose';
 
-export type PackageCode = 'FREE' | 'BASIC' | 'STANDARD' | 'PREMIUM';
 export type PriceMap = {
     [currencyCode: string]: number;
 };
@@ -19,7 +19,7 @@ const packageSchema = new Schema<IPackage>(
     {
         code: {
             type: String,
-            enum: ['FREE', 'BASIC', 'STANDARD', 'PREMIUM'],
+            enum: Object.values(PackageCode),
             required: true,
             unique: true,
             index: true,

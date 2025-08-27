@@ -1,14 +1,14 @@
 import { z } from "zod";
 
-export const PackageTypeEnum = z.enum(["Basic", "Standard", "Premium"]);
+export const skillTag = z.string().min(1).max(64);
 
 export const CreateProjectDto = z.object({
   body: z.object({
     title: z.string().min(3).max(100),
     description: z.string().min(10),
-    skillsRequired: z.array(z.string().min(2)),
+    requiredSkillIds: z.array(skillTag).min(1).max(5),
     clientId: z.string().length(24),
-    packageType: PackageTypeEnum,
+    packageId: z.string().length(24),
     agreementFileUrl: z.string().url().optional(),
   }),
 });
@@ -19,8 +19,7 @@ export const UpdateProjectDto = z.object({
     .object({
       title: z.string().min(3).max(100).optional(),
       description: z.string().min(10).optional(),
-      skillsRequired: z.array(z.string().min(2)).optional(),
-      packageType: PackageTypeEnum.optional(),
+      requiredSkillIds: z.array(skillTag).min(1).max(5).optional(),
       agreementFileUrl: z.string().url().optional(),
     })
     .refine((d) => Object.keys(d).length > 0, {

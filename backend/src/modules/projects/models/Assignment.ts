@@ -9,7 +9,7 @@ export interface IAssignment {
     status: AssignmentStatus;
     assignedAt: Date; // for 15-min timeout
     respondedAt?: Date;
-    triedDeveloperIds: Types.ObjectId[]; // avoid repeats on rotation
+    triedDeveloperIds: Types.ObjectId[];
 }
 
 

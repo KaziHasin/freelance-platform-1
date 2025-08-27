@@ -1,8 +1,8 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, model, Document, Types } from "mongoose";
 
 export interface IProjectAssignment extends Document {
-  projectId: string;
-  developerId: string;
+  projectId: Types.ObjectId;
+  developerId: Types.ObjectId;
   status: "PENDING" | "ACCEPTED" | "REJECTED" | "TIMEOUT";
   assignedAt: Date;
   respondedAt?: Date;
