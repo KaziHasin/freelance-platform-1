@@ -9,7 +9,7 @@ import {
   revealContact,
   leaveReview,
 } from "./controllers/ProjectController";
-import { resolve, search } from "./controllers/SkillController";
+import { deleteSkill, listSkills, resolve } from "./controllers/SkillController";
 
 const router = Router();
 
@@ -26,7 +26,10 @@ router.post("/projects/:id/reveal-contact", revealContact);
 // Reviews
 router.post("/projects/:id/review", leaveReview);
 
-router.post('/skills/resolve', resolve);
-router.get('/skills', search);
 
+// Skills
+
+router.post('/skills/resolve', resolve);
+router.delete('/skills/:id', deleteSkill);
+router.get('/skills', listSkills);
 export default router;

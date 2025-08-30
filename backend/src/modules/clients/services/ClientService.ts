@@ -1,8 +1,7 @@
-// src/modules/users/services/DeveloperService
-import { DeveloperRepository } from '../repositories/DeveloperRepository';
+import { ClientRepository } from '../repositories/ClientRepository';
 
-export class DeveloperService {
-    constructor(private repo = new DeveloperRepository()) { }
+export class ClientService {
+    constructor(private repo = new ClientRepository()) { }
 
     create(data: any) {
         return this.repo.create(data);
@@ -11,7 +10,14 @@ export class DeveloperService {
         return this.repo.findById(id);
     }
     async list(q?: string, page = 1, limit = 20) {
-        const filter = q ? { 'profile.skills': { $regex: q, $options: 'i' } } : {};
+        const filter = q
+            ? {
+                $or: [
+                    { 'activePackageSnapshot.code': new RegExp(q, 'i') },
+                    // allow searching by project id presence if q looks like an ObjectId
+                ],
+            }
+            : {};
         const [items, total] = await Promise.all([this.repo.find(filter, page, limit), this.repo.count(filter)]);
         return { items, total, page, limit };
     }

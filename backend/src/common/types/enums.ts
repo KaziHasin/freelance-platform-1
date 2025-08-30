@@ -24,3 +24,10 @@ export enum PackageCode {
     STANDARD = 'STANDARD',
     PREMIUM = 'PREMIUM',
 }
+
+export enum SubscriptionStatus {
+    ACTIVE = 'ACTIVE',
+    CANCELED = 'CANCELED',
+    EXPIRED = 'EXPIRED',
+    PENDING = 'PENDING',
+}

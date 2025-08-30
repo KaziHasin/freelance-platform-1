@@ -1,5 +1,5 @@
 import { DevLevel } from "@/common/types/enums";
-import { DeveloperRepository } from "@/modules/users/repositories/DeveloperRepository";
+import { DeveloperRepository } from "@/modules/developers/repositories/DeveloperRepository";
 
 
 export class SkillMatchingService {

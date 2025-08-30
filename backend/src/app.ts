@@ -3,6 +3,9 @@ import express from "express";
 import helmet from "helmet";
 import cors from "cors";
 import usersRoutes from "./modules/users/routes";
+import clientRoutes from "./modules/clients/routes";
+import developerRoutes from "./modules/developers/routes";
+import subscriptionRoutes from "./modules/subscriptions/routes";
 import projectRoutes from "./modules/projects/routes";
 import packagesRoutes from './modules/packages/routes';
 import { errorMiddleware } from "./common/middleware/errorMiddleware";
@@ -19,7 +22,10 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/healthz", (_req, res) => res.json({ status: "ok" }));
 
 app.use("/api/v1", usersRoutes);
+app.use("/api/v1", clientRoutes);
+app.use("/api/v1", developerRoutes);
 app.use('/api/v1', packagesRoutes);
+app.use('/api/v1', subscriptionRoutes);
 app.use("/api/v1", projectRoutes);
 
 app.use(errorMiddleware);

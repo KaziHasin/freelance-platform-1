@@ -1,7 +1,5 @@
+import { PackageCode } from '@/common/types/enums';
 import { z } from 'zod';
-
-export const PackageCodeEnum = z.enum(['FREE', 'BASIC', 'STANDARD', 'PREMIUM']);
-
 
 const PricesSchema = z.record(
     z.string().regex(/^[A-Z]{3}$/, 'Currency code must be 3 uppercase letters (e.g. USD, INR)'),
@@ -22,7 +20,7 @@ const UnlimitedNumber = z
 
 export const CreatePackageDto = z.object({
     body: z.object({
-        code: PackageCodeEnum,
+        code: PackageCode,
         prices: PricesSchema,
         projectsPerMonth: UnlimitedNumber,
         contactClicksPerProject: UnlimitedNumber,

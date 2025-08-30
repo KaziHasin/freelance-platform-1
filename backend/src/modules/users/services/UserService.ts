@@ -1,9 +1,7 @@
 import { PackageRepository } from '@/modules/packages/repositories/PackageRepository';
-import { ClientRepository } from '../repositories/ClientRepository';
+import { ClientRepository } from '../../clients/repositories/ClientRepository';
 import { UserRepository } from '../repositories/UserRepository';
 import bcrypt from 'bcryptjs';
-import { PackageCode } from '@/common/types/enums';
-import { Types } from 'mongoose';
 
 export class UserService {
     constructor(private repo = new UserRepository(), private clientRepo = new ClientRepository(), private packageRepo = new PackageRepository()) { }
@@ -22,13 +20,7 @@ export class UserService {
             toCreate.passwordHash = await bcrypt.hash(data.password, 10);
             delete toCreate.password;
         }
-        const user = await this.repo.create(toCreate);
-        if (user.role === 'CLIENT') {
-            await this.clientRepo.create({
-                userId: user._id,
-            });
-        }
-        return user;
+        return await this.repo.create(toCreate);
     }
 
     get(id: string) {

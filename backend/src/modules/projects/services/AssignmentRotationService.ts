@@ -1,7 +1,7 @@
 import { AssignmentStatus } from '@/common/types/enums';
 import { Assignment } from '../models/Assignment';
 import { SkillMatchingService } from './SkillMatchingService';
-import { Developer } from '@/modules/users/models/Developer';
+import { Developer } from '@/modules/developers/models/Developer';
 import { ProjectRepository } from '../repositories/ProjectRepository';
 
 export class AssignmentRotationService {

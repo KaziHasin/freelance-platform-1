@@ -1,9 +1,8 @@
-// src/modules/users/controllers/DeveloperController
 import { Request, Response } from 'express';
 import { asyncHandler } from '../../../common/utils/asyncHandler';
 import { validate } from '../../../common/middleware/validate';
 import { CreateDeveloperDto, UpdateDeveloperDto } from '../dtos/DeveloperDto';
-import { ListQueryDto } from '../dtos/UserDto';
+import { ListQueryDto } from '../../users/dtos/UserDto';
 import { DeveloperService } from '../services/DeveloperService';
 
 const service = new DeveloperService();

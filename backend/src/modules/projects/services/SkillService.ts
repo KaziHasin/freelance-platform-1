@@ -23,4 +23,17 @@ export class SkillService {
 
         return namesLower.map(n => idByName.get(n)!);
     }
+
+
+    async list(q?: string, page = 1, limit = 20) {
+        const filter = q
+            ? { name: new RegExp(q, 'i') }
+            : {};
+        const [items, total] = await Promise.all([this.repo.find(filter, page, limit), this.repo.count(filter)]);
+        return { items, total, page, limit };
+    }
+
+    remove(id: string) {
+        return this.repo.delete(id);
+    }
 }

@@ -1,5 +1,5 @@
 import { ISkill, Skill } from '../models/Skill';
-
+import { FilterQuery } from "mongoose";
 
 export class SkillRepository {
 
@@ -13,9 +13,17 @@ export class SkillRepository {
 
     findByNamesLower(namesLower: string[]) {
         return Skill.find({ name: { $in: namesLower } }).lean();
+
     }
 
-    find(filter: any) {
-        return Skill.find(filter);
+    find(filter: FilterQuery<ISkill>, page = 1, limit = 20) {
+        return Skill.find(filter).skip((page - 1) * limit).limit(limit).sort({ createdAt: -1 });
+    }
+
+    count(filter: FilterQuery<ISkill>) {
+        return Skill.countDocuments(filter);
+    }
+    delete(id: string) {
+        return Skill.findByIdAndDelete(id);
     }
 }

@@ -1,8 +1,7 @@
-// src/modules/users/services/ClientService
-import { ClientRepository } from '../repositories/ClientRepository';
+import { SubscriptionRepository } from "../repositories/SubscriptionRepository";
 
-export class ClientService {
-    constructor(private repo = new ClientRepository()) { }
+export class SubscriptionService {
+    constructor(private repo = new SubscriptionRepository()) { }
 
     create(data: any) {
         return this.repo.create(data);
@@ -11,14 +10,7 @@ export class ClientService {
         return this.repo.findById(id);
     }
     async list(q?: string, page = 1, limit = 20) {
-        const filter = q
-            ? {
-                $or: [
-                    { 'activePackageSnapshot.code': new RegExp(q, 'i') },
-                    // allow searching by project id presence if q looks like an ObjectId
-                ],
-            }
-            : {};
+        const filter = q ? { '': { $regex: q, $options: 'i' } } : {};
         const [items, total] = await Promise.all([this.repo.find(filter, page, limit), this.repo.count(filter)]);
         return { items, total, page, limit };
     }

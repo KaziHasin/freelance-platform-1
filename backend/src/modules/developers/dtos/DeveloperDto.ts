@@ -12,7 +12,7 @@ export const CreateDeveloperDto = z.object({
                 status: VerificationStatusEnum.default('PENDING'),
                 reviewedBy: z.string().length(24).optional(),
             })
-            .default({ docUrl: '' }),
+            .default({ docUrl: '', status: 'PENDING' }),
         profile: z.object({
             photoUrl: z.string().url().optional(),
             bio: z.string().optional(),
@@ -50,4 +50,12 @@ export const UpdateDeveloperDto = z.object({
         level: DeveloperLevelEnum.optional(),
         rating: z.object({ avg: z.number().min(0), count: z.number().int().min(0) }).partial().optional(),
     }),
+});
+
+export const ListQueryDto = z.object({
+    query: z.object({
+        page: z.coerce.number().min(1).default(1),
+        limit: z.coerce.number().min(1).max(100).default(20),
+        search: z.string().optional(),
+    }).strict(),
 });

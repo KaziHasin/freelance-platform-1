@@ -1,6 +1,5 @@
-import { ClientRepository } from "@/modules/users/repositories/ClientRepository";
+import { ClientRepository } from "@/modules/clients/repositories/ClientRepository";
 import { ProjectRepository } from "../repositories/ProjectRepository";
-import { AssignmentRotationService } from "./AssignmentRotationService";
 import { SkillService } from "./SkillService";
 import { PackageRepository } from "@/modules/packages/repositories/PackageRepository";
 

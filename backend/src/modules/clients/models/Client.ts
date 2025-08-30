@@ -3,7 +3,6 @@ import { Schema, model, Document, Types } from 'mongoose';
 export interface IClient extends Document {
     userId: Types.ObjectId;
     freeTrialUsed: boolean;
-    subscriptionId?: Types.ObjectId;
     contactClickUsage: {
         projectId: Types.ObjectId;
         clicks: number;
@@ -16,7 +15,6 @@ const clientSchema = new Schema<IClient>(
     {
         userId: { type: Schema.Types.ObjectId, ref: 'User', unique: true, required: true },
         freeTrialUsed: { type: Boolean, default: false },
-        subscriptionId: { type: Schema.Types.ObjectId, ref: 'Subscription' },
         contactClickUsage: [
             {
                 projectId: { type: Schema.Types.ObjectId, ref: 'Project', required: true },

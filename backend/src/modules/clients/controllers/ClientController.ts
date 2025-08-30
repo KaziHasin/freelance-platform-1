@@ -1,4 +1,3 @@
-// src/modules/users/controllers/ClientController
 import { Request, Response } from 'express';
 import { asyncHandler } from '../../../common/utils/asyncHandler';
 import { validate } from '../../../common/middleware/validate';
@@ -18,8 +17,8 @@ export const createClient = [
 export const listClients = [
     validate(ListQueryDto),
     asyncHandler(async (req: Request, res: Response) => {
-        const { page, limit, q } = req.query as any;
-        const result = await service.list(q, Number(page), Number(limit));
+        const { page, limit, search } = req.query as any;
+        const result = await service.list(search, Number(page), Number(limit));
         res.json(result);
     }),
 ];
