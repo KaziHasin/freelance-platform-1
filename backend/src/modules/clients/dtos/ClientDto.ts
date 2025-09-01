@@ -1,8 +1,16 @@
 import { z } from 'zod';
+import is from 'zod/v4/locales/is.cjs';
+export const VerificationStatusEnum = z.enum(['PENDING', 'APPROVED', 'REJECTED']);
 export const CreateClientDto = z.object({
     body: z.object({
         userId: z.string().length(24),
         freeTrialUsed: z.boolean().default(false),
+        verification: z
+            .object({
+                status: VerificationStatusEnum.default('PENDING'),
+                reviewedBy: z.string().length(24).optional(),
+            })
+            .default({ status: 'PENDING' }),
     }),
 });
 
@@ -14,6 +22,7 @@ export const UpdateClientDto = z.object({
             .array(z.object({ projectId: z.string().length(24), clicks: z.number().int().min(0) }))
             .optional(),
     }),
+    isActive: z.boolean().optional(),
 });
 
 export const ListQueryDto = z.object({

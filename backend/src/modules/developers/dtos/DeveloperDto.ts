@@ -48,6 +48,7 @@ export const UpdateDeveloperDto = z.object({
             })
             .optional(),
         level: DeveloperLevelEnum.optional(),
+        isActive: z.boolean().optional(),
         rating: z.object({ avg: z.number().min(0), count: z.number().int().min(0) }).partial().optional(),
     }),
 });

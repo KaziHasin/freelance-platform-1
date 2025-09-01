@@ -12,6 +12,8 @@ export interface IUser extends Document {
     provider: Provider;
     role: Role;
     status: 'ACTIVE' | 'INACTIVE' | 'PENDING';
+    otp?: string | null;
+    otpExpiresAt?: Date | null;
     lastLoginAt?: Date;
     createdAt: Date;
     updatedAt: Date;

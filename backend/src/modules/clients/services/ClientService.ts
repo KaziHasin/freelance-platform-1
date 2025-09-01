@@ -1,10 +1,27 @@
+import { PackageRepository } from '@/modules/packages/repositories/PackageRepository';
 import { ClientRepository } from '../repositories/ClientRepository';
+import { SubscriptionRepository } from '@/modules/subscriptions/repositories/SubscriptionRepository';
+import { Types } from 'mongoose';
 
 export class ClientService {
-    constructor(private repo = new ClientRepository()) { }
+    constructor(private repo = new ClientRepository(), private packageRepo = new PackageRepository(), private subscriptionRepo = new SubscriptionRepository()) { }
 
-    create(data: any) {
-        return this.repo.create(data);
+    async create(data: any) {
+        const client = await this.repo.create(data);
+        const freePackage = await this.packageRepo.findOne({ code: 'FREE' });
+
+        if (freePackage) {
+            const subscriptionData = {
+                clientId: client._id as Types.ObjectId,
+                packageId: freePackage._id as Types.ObjectId,
+                startDate: new Date(),
+                isTrial: true,
+            };
+
+            await this.subscriptionRepo.create(subscriptionData);
+        }
+
+        return client;
     }
     get(id: string) {
         return this.repo.findById(id);
@@ -14,7 +31,6 @@ export class ClientService {
             ? {
                 $or: [
                     { 'activePackageSnapshot.code': new RegExp(q, 'i') },
-                    // allow searching by project id presence if q looks like an ObjectId
                 ],
             }
             : {};

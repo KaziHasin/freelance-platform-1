@@ -1,3 +1,9 @@
+export enum Role {
+    CLIENT = "CLIENT",
+    DEVELOPER = "DEVELOPER",
+    ADMIN = "ADMIN",
+}
+
 export enum DevLevel {
     EXPERT = 'EXPERT',
     MID = 'MID',

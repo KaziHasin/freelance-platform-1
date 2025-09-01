@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import helmet from "helmet";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import usersRoutes from "./modules/users/routes";
 import clientRoutes from "./modules/clients/routes";
 import developerRoutes from "./modules/developers/routes";
@@ -17,6 +18,8 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
 
 // --- Health Check ---
 app.get("/healthz", (_req, res) => res.json({ status: "ok" }));

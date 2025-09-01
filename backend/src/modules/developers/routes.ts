@@ -4,15 +4,18 @@ import { Router } from 'express';
 import {
     createDeveloper, listDevelopers, getDeveloper, updateDeveloper, deleteDeveloper,
 } from '../developers/controllers/DeveloperController';
+import { authMiddleware } from '@/common/middleware/authMiddleware';
+import { authorize } from '@/common/middleware/authorizeMiddleware';
+import { Role } from '@/common/types/enums';
 
 
 const router = Router();
 
 
-router.post('/developers', ...createDeveloper);
-router.get('/developers', ...listDevelopers);
-router.get('/developers/:id', getDeveloper);
-router.put('/developers/:id', ...updateDeveloper);
-router.delete('/developers/:id', deleteDeveloper);
+router.post('/developers', authMiddleware, authorize(Role.ADMIN), createDeveloper);
+router.get('/developers', authMiddleware, authorize(Role.ADMIN), listDevelopers);
+router.get('/developers/:id', authMiddleware, authorize(Role.DEVELOPER), getDeveloper);
+router.put('/developers/:id', authMiddleware, authorize(Role.ADMIN), updateDeveloper);
+router.delete('/developers/:id', authMiddleware, authorize(Role.ADMIN), deleteDeveloper);
 
 export default router;

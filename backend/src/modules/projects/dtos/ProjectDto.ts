@@ -8,7 +8,6 @@ export const CreateProjectDto = z.object({
     description: z.string().min(10),
     requiredSkillIds: z.array(skillTag).min(1).max(5),
     clientId: z.string().length(24),
-    packageId: z.string().length(24),
     agreementFileUrl: z.string().url().optional(),
   }),
 });

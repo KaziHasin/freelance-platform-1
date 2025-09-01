@@ -53,21 +53,3 @@ export const deleteProject = asyncHandler(
   }
 );
 
-export const assignProject = asyncHandler(
-  async (req: Request, res: Response) => {
-    // TODO: Implement developer assignment logic
-    res.status(501).json({ message: "Not implemented" });
-  }
-);
-
-export const revealContact = asyncHandler(
-  async (req: Request, res: Response) => {
-    // TODO: Implement contact reveal logic
-    res.status(501).json({ message: "Not implemented" });
-  }
-);
-
-export const leaveReview = asyncHandler(async (req: Request, res: Response) => {
-  // TODO: Implement review logic
-  res.status(501).json({ message: "Not implemented" });
-});

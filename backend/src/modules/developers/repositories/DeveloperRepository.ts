@@ -49,7 +49,7 @@ export class DeveloperRepository {
                 $addFields: {
                     matchedSkills: {
                         $size: {
-                            $setIntersection: ["$skills", requiredSkillIds],
+                            $setIntersection: ["$profile.skills", requiredSkillIds],
                         },
                     },
                 },

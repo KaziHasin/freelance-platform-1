@@ -20,10 +20,13 @@ export interface IDeveloper extends Document {
         whatsapp: string;
     };
     level: DevLevel;
+    isActive: boolean;
     rating: {
         avg: number;
         count: number;
     };
+    assignedCount: number;
+    lastAssignedAt?: Date;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -56,11 +59,14 @@ const developerSchema = new Schema<IDeveloper>(
             enum: Object.values(DevLevel),
             default: DevLevel.FRESHER,
         },
+        isActive: { type: Boolean, default: true },
 
         rating: {
             avg: { type: Number, default: 0 },
             count: { type: Number, default: 0 },
         },
+        assignedCount: { type: Number, default: 0 },
+        lastAssignedAt: { type: Date },
     },
     { timestamps: true }
 );

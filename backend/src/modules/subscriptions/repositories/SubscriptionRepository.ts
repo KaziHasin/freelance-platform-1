@@ -1,3 +1,4 @@
+import { SubscriptionStatus } from "@/common/types/enums";
 import { Subscription, ISubscription } from "../models/Subscription";
 import { FilterQuery, Types } from "mongoose";
 
@@ -5,9 +6,18 @@ export class SubscriptionRepository {
     async create(data: Partial<ISubscription>) {
         return await Subscription.create(data);
     }
-
     async findById(id: string) {
         return await Subscription.findById(id).populate("clientId packageId");
+    }
+    async getActiveSubscription(clientId: Types.ObjectId) {
+        return Subscription.findOne({
+            clientId,
+            status: SubscriptionStatus.ACTIVE,
+            $or: [
+                { endDate: null },
+                { endDate: { $gte: new Date() } }
+            ]
+        }).populate('packageId');
     }
 
     find(filter: any, page = 1, limit = 20) {

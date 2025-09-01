@@ -12,6 +12,12 @@ export class UserRepository {
     findOne(filter: FilterQuery<IUser>) {
         return User.findOne(filter);
     }
+    findByEmail(email: string) {
+        return User.findOne({ email });
+    }
+    findByPhone(phone: string) {
+        return User.findOne({ phone });
+    }
     find(filter: any, page = 1, limit = 20) {
         return User.find(filter).skip((page - 1) * limit).limit(limit).sort({ createdAt: -1 });
     }

@@ -1,17 +1,20 @@
 import { Router } from 'express';
 import * as PackageController from './controllers/PackageController';
+import { Role } from '@/common/types/enums';
+import { authorize } from '@/common/middleware/authorizeMiddleware';
+import { authMiddleware } from '@/common/middleware/authMiddleware';
 
 const router = Router();
 
 router
     .route('/packages')
-    .get(PackageController.listPackages)
-    .post(PackageController.createPackage);
+    .get(authMiddleware, authorize(Role.ADMIN), PackageController.listPackages)
+    .post(authMiddleware, authorize(Role.ADMIN), PackageController.createPackage);
 
 router
     .route('/packages/:id')
-    .get(PackageController.getPackage)
-    .put(PackageController.updatePackage)
-    .delete(PackageController.deletePackage);
+    .get(authMiddleware, authorize(Role.ADMIN), PackageController.getPackage)
+    .put(authMiddleware, authorize(Role.ADMIN), PackageController.updatePackage)
+    .delete(authMiddleware, authorize(Role.ADMIN), PackageController.deletePackage);
 
 export default router;
