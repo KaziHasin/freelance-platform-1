@@ -35,6 +35,20 @@ export const ListQueryDto = z.object({
     query: z.object({
         page: z.coerce.number().min(1).default(1),
         limit: z.coerce.number().min(1).max(100).default(20),
-        q: z.string().optional(),
+        search: z.string().optional(),
+        role: z
+            .string()
+            .optional()
+            .transform((val) => val?.toUpperCase()) // convert to uppercase
+            .refine((val) => !val || ['CLIENT', 'DEVELOPER', 'ADMIN'].includes(val), {
+                message: 'Invalid role',
+            }),
+        status: z
+            .string()
+            .optional()
+            .transform((val) => val?.toUpperCase())
+            .refine((val) => !val || ['ACTIVE', 'INACTIVE', 'PENDING'].includes(val), {
+                message: 'Invalid status',
+            }),
     }),
 });

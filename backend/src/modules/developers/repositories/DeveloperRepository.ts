@@ -1,6 +1,7 @@
 import { DevLevel } from '@/common/types/enums';
 import { Developer } from '../models/Developer';
 import type { IDeveloper } from '../models/Developer';
+import { Types } from 'mongoose';
 
 export class DeveloperRepository {
     create(data: Partial<IDeveloper>) {
@@ -35,27 +36,26 @@ export class DeveloperRepository {
         excludeIds: string[] = []
     ) {
         const match: any = {
-            _id: { $nin: excludeIds }, // exclude already tried developers
+            _id: { $nin: excludeIds.map(id => new Types.ObjectId(id)) },
         };
 
         if (level) {
             match.level = level;
         }
 
-        // Aggregate pipeline for skill matching
+        const skillObjectIds = requiredSkillIds.map(id => new Types.ObjectId(id));
+
         return Developer.aggregate([
             { $match: match },
             {
                 $addFields: {
                     matchedSkills: {
-                        $size: {
-                            $setIntersection: ["$profile.skills", requiredSkillIds],
-                        },
+                        $size: { $setIntersection: ["$profile.skills", skillObjectIds] },
                     },
                 },
             },
-            { $match: { matchedSkills: { $gt: 0 } } }, // only keep those with at least 1 match
-            { $sort: { matchedSkills: -1, createdAt: -1 } }, // sort by most matches, then recency
+            { $match: { matchedSkills: { $gt: 0 } } },
+            { $sort: { matchedSkills: -1, createdAt: -1 } },
         ]);
     }
 }

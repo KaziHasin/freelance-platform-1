@@ -9,6 +9,8 @@ const service = new PackageService();
 export const createPackage = [
     validate(CreatePackageDto),
     asyncHandler(async (req: Request, res: Response) => {
+        console.log(req.body);
+
         const created = await service.create(req.body);
         res.status(201).json(created);
     }),

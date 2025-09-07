@@ -16,6 +16,7 @@ export class AssignmentRotationService {
 
 
         const candidates = await this.skillMatching.getOrderedCandidates(requiredSkillIds, preferredLevel as any, tried);
+
         if (!candidates.length) return null;
 
 
@@ -58,6 +59,7 @@ export class AssignmentRotationService {
             { $set: { status: AssignmentStatus.REJECTED, respondedAt: new Date() } },
             { new: true }
         );
+        await this.assignOrRotate(projectId.toString(), await this.getProjectSkillIds(projectId.toString()), await this.getProjectPreferredLevel(projectId.toString()));
         return doc;
     }
 
@@ -67,13 +69,11 @@ export class AssignmentRotationService {
         const threshold = new Date(Date.now() - this.ROTATION_WINDOW_MS);
         const pendings = await Assignment.find({ status: AssignmentStatus.PENDING, assignedAt: { $lte: threshold } }).lean();
 
-
-        for (const a of pendings) {
+        for (const pending of pendings) {
             // mark expired and try next
-            await Assignment.updateOne({ _id: a._id }, { $set: { status: AssignmentStatus.EXPIRED, respondedAt: new Date() } });
+            await Assignment.updateOne({ _id: pending._id }, { $set: { status: AssignmentStatus.EXPIRED, respondedAt: new Date() } });
+            await this.assignOrRotate(pending.projectId.toString(), await this.getProjectSkillIds(pending.projectId.toString()), await this.getProjectPreferredLevel(pending.projectId.toString()));
 
-
-            await this.assignOrRotate(a.projectId.toString(), await this.getProjectSkillIds(a.projectId.toString()), await this.getProjectPreferredLevel(a.projectId.toString()));
         }
     }
 
@@ -82,6 +82,8 @@ export class AssignmentRotationService {
         const project = await this.projectRepo.findById(projectId).lean();
         return (project?.requiredSkillIds || []).map(x => x.toString());
     }
+
+
     private async getProjectPreferredLevel(projectId: string) {
         const project = await this.projectRepo.findById(projectId).lean();
         return project?.preferredLevel as any;

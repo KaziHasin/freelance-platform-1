@@ -44,3 +44,4 @@ export const deleteDeveloper = asyncHandler(async (req: Request, res: Response) 
     if (!deleted) return res.status(404).json({ error: 'Not Found' });
     res.status(204).send();
 });
+

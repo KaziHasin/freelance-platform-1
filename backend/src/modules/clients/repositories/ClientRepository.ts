@@ -1,3 +1,4 @@
+import { User } from '@/modules/users/models/User';
 import { Client } from '../models/Client';
 import type { IClient } from '../models/Client';
 
@@ -8,16 +9,31 @@ export class ClientRepository {
     findById(id: string) {
         return Client.findById(id).populate('userId', 'email phone roles status');
     }
+
     find(filter: any, page = 1, limit = 20) {
-        return Client.find(filter)
-            .populate("userId", "name email phone roles status")
+        return User.find({ ...filter, role: "CLIENT" })
+            .select("name email phone status provider createdAt")
             .populate({
-                path: "subscriptions",
-                populate: { path: "packageId", select: "name code price" },
+                path: "client",
+                populate: [
+                    {
+                        path: "verification.reviewedBy",
+                        select: "name email",
+                    },
+                    {
+                        path: "subscriptions",
+                        populate: { path: "packageId", select: "name code price" },
+                    },
+                    {
+                        path: "contactClickUsage.projectId",
+                        select: "name",
+                    }
+                ]
             })
             .skip((page - 1) * limit)
             .limit(limit)
             .sort({ createdAt: -1 });
+
     }
     count(filter: any) {
         return Client.countDocuments(filter);

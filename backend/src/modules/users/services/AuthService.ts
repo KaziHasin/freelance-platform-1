@@ -4,8 +4,8 @@ import { IUser } from "../models/User";
 export class AuthService {
     private accessTokenSecret: Secret = process.env.JWT_ACCESS_SECRET || "access_secret";
     private refreshTokenSecret: Secret = process.env.JWT_REFRESH_SECRET || "refresh_secret";
-    private accessTokenExpiry = "15m";   // short-lived
-    private refreshTokenExpiry = "7d";   // long-lived
+    private accessTokenExpiry = "15m";
+    private refreshTokenExpiry = "7d";
 
     generateTokens(user: IUser) {
         const payload = {

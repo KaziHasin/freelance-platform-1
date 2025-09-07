@@ -12,4 +12,8 @@ export class AssignmentCronService {
             try { await this.assignmentRotation.cronRotateExpired(); } catch (e) { console.error('cron error', e); }
         });
     }
+
+    async runOnce() {
+        await this.assignmentRotation.cronRotateExpired();
+    }
 }

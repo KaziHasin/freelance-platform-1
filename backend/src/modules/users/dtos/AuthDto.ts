@@ -1,15 +1,27 @@
 import { z } from "zod";
 
+export const RoleEnum = z.enum(['CLIENT', 'DEVELOPER', 'ADMIN']);
+export const ProviderEnum = z.enum(['local', 'google', 'phone']);
+export const StatusEnum = z.enum(['ACTIVE', 'INACTIVE', 'PENDING']);
+
 export const EmailSignupDto = z.object({
-    name: z.string().min(3),
-    email: z.string().email(),
-    password: z.string().min(6),
-    role: z.enum(["CLIENT", "DEVELOPER"]).default("CLIENT"),
+    body: z.object({
+        name: z.string().min(3, 'Name must be at least 3 characters long').max(25),
+        email: z.string().email().optional(),
+        phone: z.string().min(6).optional(),
+        password: z.string().min(6).optional(),
+        provider: ProviderEnum,
+        role: RoleEnum.default('ADMIN'),
+        status: StatusEnum.default('PENDING'),
+    }),
 });
 
+
 export const EmailLoginDto = z.object({
-    email: z.string().email(),
-    password: z.string(),
+    body: z.object({
+        email: z.string().email(),
+        password: z.string(),
+    })
 });
 
 export const PhoneRequestDto = z.object({
@@ -29,5 +41,8 @@ export const GoogleAuthDto = z.object({
 });
 
 export const RefreshTokenDto = z.object({
-    refreshToken: z.string(),
+    body: z.object({
+        refreshToken: z.string(),
+    })
+
 });

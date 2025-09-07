@@ -17,12 +17,11 @@ export const createUser = [
 export const listUsers = [
     validate(ListQueryDto),
     asyncHandler(async (req: Request, res: Response) => {
-        const { page, limit, q } = req.query as any;
-        const result = await service.list(q, Number(page), Number(limit));
+        const { page, limit, search, role, status } = req.query as any;
+        const result = await service.list(search, role, status, Number(page), Number(limit));
         res.json(result);
     }),
 ];
-
 export const getUser = asyncHandler(async (req: Request, res: Response) => {
     const item = await service.get(req.params.id as string);
     if (!item) return res.status(404).json({ error: 'Not Found' });

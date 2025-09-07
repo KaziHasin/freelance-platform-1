@@ -20,7 +20,7 @@ const UnlimitedNumber = z
 
 export const CreatePackageDto = z.object({
     body: z.object({
-        code: PackageCode,
+        code: z.nativeEnum(PackageCode),
         prices: PricesSchema,
         projectsPerMonth: UnlimitedNumber,
         contactClicksPerProject: UnlimitedNumber,
@@ -31,6 +31,7 @@ export const CreatePackageDto = z.object({
 export const UpdatePackageDto = z.object({
     params: z.object({ id: z.string().length(24, 'Invalid id') }),
     body: z.object({
+        code: z.nativeEnum(PackageCode),
         prices: PricesSchema.optional(),
         projectsPerMonth: UnlimitedNumber.optional(),
         contactClicksPerProject: UnlimitedNumber.optional(),

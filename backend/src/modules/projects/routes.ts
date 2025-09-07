@@ -10,6 +10,7 @@ import { deleteSkill, listSkills, resolve } from "./controllers/SkillController"
 import { authMiddleware } from "@/common/middleware/authMiddleware";
 import { authorize } from "@/common/middleware/authorizeMiddleware";
 import { Role } from "@/common/types/enums";
+import { acceptAssignment, rejectAssignment } from "./controllers/AssignmentRotationController";
 
 const router = Router();
 
@@ -21,9 +22,15 @@ router.put("/projects/:id", authMiddleware, authorize(Role.CLIENT), updateProjec
 router.delete("/projects/:id", authMiddleware, authorize(Role.ADMIN), deleteProject);
 
 
-
 // Skills routes
 router.post('/skills/resolve', authMiddleware, resolve);
 router.delete('/skills/:id', authMiddleware, authorize(Role.ADMIN), deleteSkill);
 router.get('/skills', authMiddleware, listSkills);
+
+
+
+// Assignment routes
+router.get('/assignments/approve/:projectId/:developerId', authMiddleware, authorize(Role.DEVELOPER), acceptAssignment);
+router.get('/assignments/reject/:projectId/:developerId', authMiddleware, authorize(Role.DEVELOPER), rejectAssignment);
+
 export default router;

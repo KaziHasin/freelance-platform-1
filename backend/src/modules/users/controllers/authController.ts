@@ -1,5 +1,5 @@
 import { asyncHandler } from "@/common/utils/asyncHandler";
-import { EmailLoginDto, EmailSignupDto, GoogleAuthDto, PhoneRequestDto, PhoneOtpVerifyDto, RefreshTokenDto, } from "../dtos/AuthDto";
+import { EmailSignupDto, EmailLoginDto, GoogleAuthDto, PhoneRequestDto, PhoneOtpVerifyDto, RefreshTokenDto, } from "../dtos/AuthDto";
 import { Request, Response } from 'express';
 import { validate } from "@/common/middleware/validate";
 import { EmailAuthService } from "../services/emailAuthService";
@@ -7,27 +7,31 @@ import { PhoneAuthService } from "../services/phoneAuthService";
 import { GoogleAuthService } from "../services/googleAuthService";
 import { setAuthCookies } from "@/common/utils/cookieHelper";
 import { AuthService } from "../services/AuthService";
+import { UserService } from "../services/UserService";
+import { JwtPayload } from "jsonwebtoken";
 
 const emailService = new EmailAuthService();
 const phoneService = new PhoneAuthService();
 const googleService = new GoogleAuthService();
 const authService = new AuthService();
+const userService = new UserService();
 
 
 export const emailSignup = [
     validate(EmailSignupDto),
     asyncHandler(async (req: Request, res: Response) => {
-        const { user, tokens } = await emailService.signup(req.body);
-        setAuthCookies(res, tokens);
-        res.json({ success: true, user });
+        const result = await emailService.signup(req.body);
+        setAuthCookies(res, result.tokens);
+        res.json({ success: true, result });
     }),
 ];
 
 export const emailLogin = [
     validate(EmailLoginDto),
     asyncHandler(async (req: Request, res: Response) => {
-        const user = await emailService.login(req.body);
-        res.json({ success: true, user });
+        const { user, tokens } = await emailService.login(req.body);
+        setAuthCookies(res, tokens);
+        res.json({ success: true, user, tokens });
     }),
 ];
 
@@ -44,7 +48,7 @@ export const verifyPhoneOtp = [
     asyncHandler(async (req: Request, res: Response) => {
         const { user, tokens } = await phoneService.verifyOtp(req.body);
         setAuthCookies(res, tokens);
-        res.json({ success: true, user });
+        res.json({ success: true, user, tokens });
     })
 ]
 
@@ -61,16 +65,29 @@ export const refreshToken = [
     validate(RefreshTokenDto),
     asyncHandler(async (req: Request, res: Response) => {
         const { refreshToken } = req.body;
-        const decoded = authService.verifyRefreshToken(refreshToken);
+
+        const decoded = authService.verifyRefreshToken(refreshToken) as JwtPayload | null;
         if (!decoded) {
             return res.status(403).json({ message: "Invalid refresh token" });
         }
 
-        const newTokens = authService.generateTokens(decoded as any);
+        const user = await userService.get(decoded.id);
+        if (!user) return res.status(404).json({ message: "User not found" });
 
-        res.json(newTokens);
-    })
-]
+        const newTokens = authService.generateTokens(user);
+
+        setAuthCookies(res, newTokens);
+        res.json({
+            user: {
+                id: user._id,
+                email: user.email,
+                name: user.name,
+                role: user.role,
+            },
+        });
+    }),
+];
+
 
 
 export const logout = [

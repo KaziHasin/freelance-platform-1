@@ -24,7 +24,7 @@ router.post("/auth/phone/verify-otp", verifyPhoneOtp);
 
 router.post("/auth/google", googleAuth);
 
-router.post('auth/refresh-token', authMiddleware, refreshToken);
+router.post('/auth/refresh', authMiddleware, refreshToken);
 
 router.post('/auth/logout', authMiddleware, logout);
 

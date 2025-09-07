@@ -32,9 +32,9 @@ export class ProjectService {
           $lte: subscription.endDate || new Date()
         }
       });
-      if (projectCount >= 1) {
-        throw new Error("Free trial users can only post 1 project.");
-      }
+      // if (projectCount >= 1) {
+      //   throw new Error("Free trial users can only post 1 project.");
+      // }
     }
 
     if (pkg.projectsPerMonth !== null) {
@@ -47,9 +47,9 @@ export class ProjectService {
         createdAt: { $gte: startOfMonth }
       });
 
-      if (projectCount >= pkg.projectsPerMonth) {
-        throw new Error(`Your package allows only ${pkg.projectsPerMonth} projects per month.`);
-      }
+      // if (projectCount >= pkg.projectsPerMonth) {
+      //   throw new Error(`Your package allows only ${pkg.projectsPerMonth} projects per month.`);
+      // }
     }
     const requiredSkillIds = await this.skillService.resolveSkillIds(data.requiredSkillIds);
     const toCreate = { ...data, requiredSkillIds };

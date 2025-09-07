@@ -1,10 +1,19 @@
+import { SkillService } from '@/modules/projects/services/SkillService';
 import { DeveloperRepository } from '../repositories/DeveloperRepository';
 
 export class DeveloperService {
-    constructor(private repo = new DeveloperRepository()) { }
+    constructor(private repo = new DeveloperRepository(), private skillService = new SkillService()) { }
 
-    create(data: any) {
-        return this.repo.create(data);
+    async create(data: any) {
+        const skills = await this.skillService.resolveSkillIds(data.profile.skills);
+        const toCreate = {
+            ...data,
+            profile: {
+                ...data.profile,
+                skills: skills,
+            },
+        };
+        return this.repo.create(toCreate);
     }
     get(id: string) {
         return this.repo.findById(id);
@@ -14,8 +23,16 @@ export class DeveloperService {
         const [items, total] = await Promise.all([this.repo.find(filter, page, limit), this.repo.count(filter)]);
         return { items, total, page, limit };
     }
-    update(id: string, data: any) {
-        return this.repo.update(id, data);
+    async update(id: string, data: any) {
+        const skills = await this.skillService.resolveSkillIds(data.profile.skills);
+        const toCreate = {
+            ...data,
+            profile: {
+                ...data.profile,
+                skills: skills,
+            },
+        };
+        return this.repo.update(id, toCreate);
     }
     remove(id: string) {
         return this.repo.delete(id);

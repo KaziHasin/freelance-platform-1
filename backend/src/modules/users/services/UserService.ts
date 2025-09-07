@@ -26,14 +26,34 @@ export class UserService {
     get(id: string) {
         return this.repo.findById(id);
     }
+    async list(q?: string, role?: string, status?: string, page = 1, limit = 20) {
+        const filter: any = {};
 
-    async list(q?: string, page = 1, limit = 20) {
-        const filter = q
-            ? { $or: [{ email: new RegExp(q, 'i') }, { phone: new RegExp(q, 'i') }] }
-            : {};
-        const [items, total] = await Promise.all([this.repo.find(filter, page, limit), this.repo.count(filter)]);
+        // Text search on email or phone
+        if (q) {
+            filter.$or = [
+                { email: new RegExp(q, 'i') },
+                { phone: new RegExp(q, 'i') },
+                { name: new RegExp(q, 'i') }
+            ];
+        }
+
+        if (role) {
+            filter.role = role.toUpperCase();
+        }
+
+        if (status) {
+            filter.status = status.toUpperCase();
+        }
+
+        const [items, total] = await Promise.all([
+            this.repo.find(filter, page, limit),
+            this.repo.count(filter)
+        ]);
+
         return { items, total, page, limit };
     }
+
 
     async update(id: string, data: any) {
         const toUpdate = { ...data };
