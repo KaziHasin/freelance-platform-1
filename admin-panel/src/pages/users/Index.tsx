@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-    PlusIcon as AddIcon,
+    PlusIcon
 } from '@heroicons/react/24/outline';
 import PageLayout from '@/components/layout/PageLayout';
 import { useGetUsersQuery } from '@/store/slices/userSlice';
@@ -98,7 +98,8 @@ const Users: React.FC = () => {
             <div className="flex justify-end items-start">
                 <Button
                     onClick={() => navigate('/users/create')}
-                    leftIcon={<AddIcon className="w-4 h-4" />}
+                    leftIcon={<PlusIcon className="w-4 h-4" />}
+
                 >
                     Add New
                 </Button>

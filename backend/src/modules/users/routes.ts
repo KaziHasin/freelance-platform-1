@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import {
-    createUser, listUsers, getUser, updateUser, deleteUser,
+    createUser, listUsers, getUser, updateUser, deleteUser, updateStatus
 } from './controllers/UserController';
 import { emailLogin, emailSignup, googleAuth, requestOtp, verifyPhoneOtp, refreshToken, logout } from './controllers/authController';
 import { authMiddleware } from '@/common/middleware/authMiddleware';
@@ -14,6 +14,7 @@ router.get('/users', authMiddleware, authorize(Role.ADMIN), listUsers);
 router.get('/users/:id', authMiddleware, authorize(Role.ADMIN), getUser);
 router.put('/users/:id', authMiddleware, authorize(Role.ADMIN), updateUser);
 router.delete('/users/:id', authMiddleware, authorize(Role.ADMIN), deleteUser);
+router.patch('/users/:id/status', authMiddleware, authorize(Role.ADMIN), updateStatus);
 
 // auth routes 
 router.post("/auth/email/signup", emailSignup);
@@ -24,7 +25,7 @@ router.post("/auth/phone/verify-otp", verifyPhoneOtp);
 
 router.post("/auth/google", googleAuth);
 
-router.post('/auth/refresh', authMiddleware, refreshToken);
+router.post('/auth/refresh', refreshToken);
 
 router.post('/auth/logout', authMiddleware, logout);
 

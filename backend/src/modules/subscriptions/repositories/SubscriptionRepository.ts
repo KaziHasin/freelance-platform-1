@@ -10,6 +10,8 @@ export class SubscriptionRepository {
         return await Subscription.findById(id).populate("clientId packageId");
     }
     async getActiveSubscription(clientId: Types.ObjectId) {
+        console.log("Client Id", clientId);
+
         return Subscription.findOne({
             clientId,
             status: SubscriptionStatus.ACTIVE,

@@ -2,6 +2,8 @@ import { IUser } from "../models/User";
 import { UserRepository } from "../repositories/UserRepository";
 import crypto from "crypto";
 import { AuthService } from "./AuthService";
+import { DeveloperService } from "@/modules/developers/services/DeveloperService";
+import { ClientService } from "@/modules/clients/services/ClientService";
 
 
 export interface OtpResponse {
@@ -23,6 +25,8 @@ export interface VerifyOtpResponse {
 export class PhoneAuthService {
     private userRepo = new UserRepository();
     private authService = new AuthService();
+    private developerService = new DeveloperService();
+    private clientService = new ClientService();
 
     /**
      * Step 1: Request OTP (for both signup & login)
@@ -39,7 +43,7 @@ export class PhoneAuthService {
                 phone,
                 provider: "phone",
                 role: role as any,
-                status: "PENDING",
+                status: "ACTIVE",
             });
         }
 
@@ -50,6 +54,14 @@ export class PhoneAuthService {
             otp,
             otpExpiresAt: new Date(Date.now() + 5 * 60 * 1000),
         });
+
+        if (user.role === 'DEVELOPER') {
+            await this.developerService.create({ userId: user._id });
+        }
+
+        if (user.role === 'CLIENT') {
+            await this.clientService.create({ userId: user._id });
+        }
 
         // TODO: send otp via SMS provider later
         return { message: "OTP generated", otp }; // return otp for dev only

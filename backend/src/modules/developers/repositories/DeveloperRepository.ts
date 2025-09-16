@@ -2,17 +2,42 @@ import { DevLevel } from '@/common/types/enums';
 import { Developer } from '../models/Developer';
 import type { IDeveloper } from '../models/Developer';
 import { Types } from 'mongoose';
+import { User } from '@/modules/users/models/User';
 
 export class DeveloperRepository {
     create(data: Partial<IDeveloper>) {
         return Developer.create(data);
     }
     findById(id: string) {
-        return Developer.findById(id).populate('userId', 'email phone roles status');
+        return User.findById(id)
+            .populate({
+                path: "developer",
+                populate: [
+                    {
+                        path: "assignments",
+                        populate: { path: "projectId", select: "title description createdAt" }
+                    },
+                    {
+                        path: "notRepliedAssignments",
+                        populate: { path: "projectId" }
+                    },
+                    {
+                        path: "verification.reviewedBy",
+                        select: "name avatar email"
+                    },
+                    {
+                        path: "profile.skills",
+                        select: "name label"
+                    }
+                ]
+            });
     }
     find(filter: any, page = 1, limit = 20) {
-        return Developer.find(filter)
-            .populate('userId', 'email phone roles status')
+        return User.find({ ...filter, role: "DEVELOPER" })
+            .select("name email phone status provider createdAt")
+            .populate({
+                path: "developer",
+            })
             .skip((page - 1) * limit)
             .limit(limit)
             .sort({ createdAt: -1 });
@@ -20,7 +45,7 @@ export class DeveloperRepository {
     count(filter: any) {
         return Developer.countDocuments(filter);
     }
-    update(id: string, data: Partial<IDeveloper>) {
+    update(id: string, data: any) {
         return Developer.findByIdAndUpdate(id, data, { new: true });
     }
     delete(id: string) {

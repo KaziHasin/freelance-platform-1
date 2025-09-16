@@ -18,15 +18,6 @@ const HeaderLayout: React.FC<HeaderLayoutProps> = ({ title, breadcrumbs = [] }) 
                 {/* Breadcrumbs */}
                 <nav aria-label="breadcrumb" className="overflow-x-auto">
                     <ol className="breadcrumb mb-0 flex whitespace-nowrap">
-                        {/* <li className="breadcrumb-item flex items-center">
-                            <Link to="/" className="text-decoration-none">
-                                <i className="bi bi-house-door me-1"></i>
-                                Home
-                            </Link>
-                            {breadcrumbs.length > 0 && (
-                                <ChevronRightIcon className="mx-2 text-gray-400 w-4 h-4" />
-                            )}
-                        </li> */}
                         {breadcrumbs.map((crumb, index) => (
                             <li
                                 key={index}

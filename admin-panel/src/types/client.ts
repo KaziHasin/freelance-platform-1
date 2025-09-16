@@ -1,8 +1,11 @@
 export interface Client {
     _id: string;
+    email: string;
+    name: string;
+    role: string;
     createdAt: string;
     updatedAt: string;
-    isActive: boolean;
+    status: string;
     freeTrialUsed: boolean;
     contactClickUsage: any[];
 

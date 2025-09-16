@@ -11,7 +11,7 @@ export interface IUser extends Document {
     passwordHash?: string;
     provider: Provider;
     role: Role;
-    status: 'ACTIVE' | 'INACTIVE' | 'PENDING';
+    status: 'ACTIVE' | 'INACTIVE';
     otp?: string | null;
     otpExpiresAt?: Date | null;
     lastLoginAt?: Date;
@@ -33,12 +33,36 @@ const userSchema = new Schema<IUser>(
         },
         status: {
             type: String,
-            enum: ['ACTIVE', 'INACTIVE', 'PENDING'],
-            default: 'PENDING',
+            enum: ['ACTIVE', 'INACTIVE'],
+            default: 'ACTIVE',
         },
         lastLoginAt: { type: Date },
     },
-    { timestamps: true }
+    {
+        timestamps: true,
+        toJSON: { virtuals: true },
+        toObject: { virtuals: true }
+    }
 );
+
+userSchema.virtual('client', {
+    ref: 'Client',
+    localField: '_id',
+    foreignField: 'userId',
+    justOne: true,
+});
+
+userSchema.virtual('developer', {
+    ref: 'Developer',
+    localField: '_id',
+    foreignField: 'userId',
+    justOne: true,
+});
+
+userSchema.virtual("avatar").get(function (this: IUser) {
+    const encodedName = encodeURIComponent(this.name || "U");
+    return `https://avatar.iran.liara.run/username?username=${encodedName}&background=b9d7f9&color=1478eb`;
+});
+
 
 export const User = model<IUser>('User', userSchema);

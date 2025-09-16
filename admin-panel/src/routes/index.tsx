@@ -5,14 +5,16 @@ import ProtectedRoute from "@/components/auth/ProtectedRoute";
 const Login = lazy(() => import('@/pages/auth/Login'));
 const Layout = lazy(() => import('@/components/layout/Layout'));
 const Dashboard = lazy(() => import('@/pages/Dashboard'));
-const Subjects = lazy(() => import('@/pages/subjects/Index'));
+const Packages = lazy(() => import('@/pages/packages/Index'));
+const CreatePackage = lazy(() => import('@/pages/packages/Create'))
+const EditPackage = lazy(() => import('@/pages/packages/Edit'))
 const Users = lazy(() => import('@/pages/users/Index'));
+const Clients = lazy(() => import('@/pages/clients/Index'));
+const ClientView = lazy(() => import('@/pages/clients/View'));
+const Developers = lazy(() => import('@/pages/developers/Index'));
+const DeveloperView = lazy(() => import('@/pages/developers/View'));
 const CreateUser = lazy(() => import('@/pages/users/Create'));
 const UserProfile = lazy(() => import('@/pages/users/Profile'));
-
-
-const Roles = lazy(() => import('@/pages/acl/roles/Index'));
-
 
 
 
@@ -42,16 +44,38 @@ const AppRoutes = () => {
                         </ProtectedRoute>
                     }
                 />
+                {/* Start Packages route  */}
                 <Route
-                    path="/subjects"
+                    path="/packages"
                     element={
                         <ProtectedRoute>
                             <Layout>
-                                <Subjects />
+                                <Packages />
                             </Layout>
                         </ProtectedRoute>
                     }
                 />
+                <Route
+                    path="/packages/create"
+                    element={
+                        <ProtectedRoute>
+                            <Layout>
+                                <CreatePackage />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/packages/edit/:id"
+                    element={
+                        <ProtectedRoute>
+                            <Layout>
+                                <EditPackage />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+                {/* End Packages route  */}
                 <Route
                     path="/users/all"
                     element={
@@ -82,16 +106,52 @@ const AppRoutes = () => {
                         </ProtectedRoute>
                     }
                 />
+                {/* Start Client routes  */}
                 <Route
-                    path="access-control/roles"
+                    path="/users/clients"
                     element={
                         <ProtectedRoute>
                             <Layout>
-                                <Roles />
+                                <Clients />
                             </Layout>
                         </ProtectedRoute>
                     }
                 />
+                <Route
+                    path="/users/clients/:id"
+                    element={
+                        <ProtectedRoute>
+                            <Layout>
+                                <ClientView />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+                {/* End Client routes  */}
+
+                {/* Start Developers routes  */}
+                <Route
+                    path="/users/developers"
+                    element={
+                        <ProtectedRoute>
+                            <Layout>
+                                <Developers />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/users/developers/:id"
+                    element={
+                        <ProtectedRoute>
+                            <Layout>
+                                <DeveloperView />
+                            </Layout>
+                        </ProtectedRoute>
+                    }
+                />
+                {/* End Developers routes  */}
+
                 {/* Catch all route */}
                 <Route path="*" element={<Navigate to="/" />} />
             </Routes>

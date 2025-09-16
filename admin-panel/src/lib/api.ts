@@ -25,6 +25,7 @@ export const API_ENDPOINTS = {
     USERS: {
         LIST: '/users',
         DETAIL: (id: string) => `/users/${id}`,
+        UPDATE_STATUS: (id: string) => `/users/${id}/status`,
         PROFILE: '/users/profile',
         CHANGE_PASSWORD: '/users/change-password',
         UPLOAD_AVATAR: '/users/upload-avatar',
@@ -36,4 +37,18 @@ export const API_ENDPOINTS = {
         UPDATE: (id: string) => `/clients/${id}`,
         DELETE: (id: string) => `/clients/${id}`,
     },
+    DEVELOPERS: {
+        LIST: '/developers',
+        DETAIL: (id: string) => `/developers/${id}`,
+        CREATE: '/developers',
+        REVIEW_STATUS: (id: string) => `/developers/${id}/review`,
+        DELETE: (id: string) => `/developers/${id}`,
+    },
+    PACKAGES: {
+        LIST: 'packages',
+        DETAIL: (id: string) => `packages/${id}`,
+        CREATE: '/packages',
+        UPDATE: (id: string) => `/packages/${id}`,
+        DELETE: (id: string) => `/packages/${id}`,
+    }
 };

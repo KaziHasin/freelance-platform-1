@@ -26,15 +26,24 @@ export class ClientService {
     get(id: string) {
         return this.repo.findById(id);
     }
-    async list(q?: string, page = 1, limit = 20) {
-        const filter = q
-            ? {
-                $or: [
-                    { 'activePackageSnapshot.code': new RegExp(q, 'i') },
-                ],
-            }
-            : {};
-        const [items, total] = await Promise.all([this.repo.find(filter, page, limit), this.repo.count(filter)]);
+    async list(q?: string, status?: string, page = 1, limit = 20) {
+        const filter: any = {};
+        if (q) {
+            filter.$or = [
+                { email: new RegExp(q, 'i') },
+                { phone: new RegExp(q, 'i') },
+                { name: new RegExp(q, 'i') }
+            ];
+        }
+        if (status) {
+            filter.status = status.toUpperCase();
+        }
+
+        const [items, total] = await Promise.all([
+            this.repo.find(filter, page, limit),
+            this.repo.count(filter)
+        ]);
+
         return { items, total, page, limit };
     }
     update(id: string, data: any) {

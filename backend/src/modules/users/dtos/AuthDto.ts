@@ -40,9 +40,6 @@ export const GoogleAuthDto = z.object({
     role: z.enum(["CLIENT", "DEVELOPER"]).default("CLIENT"),
 });
 
-export const RefreshTokenDto = z.object({
-    body: z.object({
-        refreshToken: z.string(),
-    })
 
-});
+
+

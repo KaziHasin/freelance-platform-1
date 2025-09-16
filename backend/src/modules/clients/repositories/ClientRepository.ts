@@ -7,29 +7,21 @@ export class ClientRepository {
         return await Client.create(data);
     }
     findById(id: string) {
-        return Client.findById(id).populate('userId', 'email phone roles status');
+        return User.findById(id)
+            .populate({
+                path: "client",
+                populate: [
+                    { path: "subscriptions", populate: { path: "packageId", select: "code price" } },
+                    { path: "contactClickUsage.projectId", select: "name" },
+                    { path: "projects", select: "title description createdAt" }
+                ],
+            });
     }
 
     find(filter: any, page = 1, limit = 20) {
         return User.find({ ...filter, role: "CLIENT" })
             .select("name email phone status provider createdAt")
-            .populate({
-                path: "client",
-                populate: [
-                    {
-                        path: "verification.reviewedBy",
-                        select: "name email",
-                    },
-                    {
-                        path: "subscriptions",
-                        populate: { path: "packageId", select: "name code price" },
-                    },
-                    {
-                        path: "contactClickUsage.projectId",
-                        select: "name",
-                    }
-                ]
-            })
+
             .skip((page - 1) * limit)
             .limit(limit)
             .sort({ createdAt: -1 });

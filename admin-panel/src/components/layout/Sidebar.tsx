@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { getUser } from '@/lib/auth'
 import {
@@ -33,12 +33,18 @@ const Sidebar = ({ collapsed, isMobile = false, onClose }: SidebarProps) => {
         return location.pathname === path || location.pathname.startsWith(`${path}/`);
     };
 
-    const toggleSubmenu = (submenu: string) => {
-        setOpenSubmenus(prev => ({
-            ...prev,
-            [submenu]: !prev[submenu]
-        }));
-    };
+    useEffect(() => {
+        menuItems.forEach(item => {
+            if (item.children) {
+                const childActive = item.children.some(child =>
+                    location.pathname.startsWith(child.path)
+                );
+                if (childActive && !expandedItems.includes(item.path)) {
+                    setExpandedItems(prev => [...prev, item.path]);
+                }
+            }
+        });
+    }, [location.pathname]);
 
     const renderMenuItem = (item: MenuItem, level = 0) => {
         const hasChildren = item.children && item.children.length > 0;

@@ -42,3 +42,10 @@ export const deleteUser = asyncHandler(async (req: Request, res: Response) => {
     if (!deleted) return res.status(404).json({ error: 'Not Found' });
     res.status(204).send();
 });
+
+export const updateStatus = asyncHandler(async (req: Request, res: Response) => {
+    const updated = await service.update(req.params.id as string, req.body);
+    if (!updated) return res.status(404).json({ error: 'Not Found' });
+    res.json(updated);
+
+});

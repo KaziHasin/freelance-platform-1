@@ -1,5 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseQuery, API_ENDPOINTS } from '@/lib/api';
+import { API_ENDPOINTS } from '@/lib/api';
 import { User } from '@/types';
 import { baseQueryWithReauth } from '@/lib/baseQueryWithReauth';
 // Types

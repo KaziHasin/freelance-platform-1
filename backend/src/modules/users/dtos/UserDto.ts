@@ -47,7 +47,7 @@ export const ListQueryDto = z.object({
             .string()
             .optional()
             .transform((val) => val?.toUpperCase())
-            .refine((val) => !val || ['ACTIVE', 'INACTIVE', 'PENDING'].includes(val), {
+            .refine((val) => !val || ['ACTIVE', 'INACTIVE'].includes(val), {
                 message: 'Invalid status',
             }),
     }),

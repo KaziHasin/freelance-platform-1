@@ -1,10 +1,11 @@
-import { PackageRepository } from '@/modules/packages/repositories/PackageRepository';
-import { ClientRepository } from '../../clients/repositories/ClientRepository';
+
 import { UserRepository } from '../repositories/UserRepository';
 import bcrypt from 'bcryptjs';
+import { ClientService } from '@/modules/clients/services/ClientService';
+import { DeveloperService } from '@/modules/developers/services/DeveloperService';
 
 export class UserService {
-    constructor(private repo = new UserRepository(), private clientRepo = new ClientRepository(), private packageRepo = new PackageRepository()) { }
+    constructor(private repo = new UserRepository(), private clientService = new ClientService(), private developerService = new DeveloperService()) { }
 
     async create(data: any) {
         if (data.email) {
@@ -15,12 +16,26 @@ export class UserService {
                 throw err;
             }
         }
+
         const toCreate = { ...data };
         if (data.password) {
             toCreate.passwordHash = await bcrypt.hash(data.password, 10);
             delete toCreate.password;
         }
-        return await this.repo.create(toCreate);
+
+        const user = await this.repo.create(toCreate);
+
+        if (user.role === 'CLIENT') {
+            await this.clientService.create({ userId: user._id });
+        }
+
+        if (user.role === 'DEVELOPER') {
+            console.log(user.role);
+
+            await this.developerService.create({ userId: user._id });
+        }
+
+        return user;
     }
 
     get(id: string) {
@@ -29,7 +44,6 @@ export class UserService {
     async list(q?: string, role?: string, status?: string, page = 1, limit = 20) {
         const filter: any = {};
 
-        // Text search on email or phone
         if (q) {
             filter.$or = [
                 { email: new RegExp(q, 'i') },
@@ -56,11 +70,8 @@ export class UserService {
 
 
     async update(id: string, data: any) {
-        const toUpdate = { ...data };
-        if (data.password) {
-            toUpdate.passwordHash = await bcrypt.hash(data.password, 10);
-            delete toUpdate.password;
-        }
+        const { name, email, phone } = data;
+        const toUpdate = { name, email, phone };
         return this.repo.update(id, toUpdate);
     }
 

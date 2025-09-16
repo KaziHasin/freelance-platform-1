@@ -3,9 +3,7 @@ import {
     UsersIcon,
     UserGroupIcon,
     UserCircleIcon,
-    ShieldCheckIcon as AccessControlIcon,
-    KeyIcon as RolesIcon,
-    BookOpenIcon as SubjectsIcon,
+    DocumentCheckIcon,
 } from '@heroicons/react/24/outline';
 
 export interface MenuItem {
@@ -22,9 +20,9 @@ export const menuItems: MenuItem[] = [
         path: '/',
     },
     {
-        title: 'Subjects',
-        icon: SubjectsIcon,
-        path: '/subjects',
+        title: 'Packages',
+        icon: DocumentCheckIcon,
+        path: '/packages',
     },
     {
         title: 'Manage Users',
@@ -37,22 +35,20 @@ export const menuItems: MenuItem[] = [
                 path: '/users/all',
             },
             {
+                title: 'Clients',
+                icon: UserGroupIcon,
+                path: '/users/clients',
+            },
+            {
+                title: 'Developers',
+                icon: UserGroupIcon,
+                path: '/users/developers',
+            },
+            {
                 title: 'User Profile',
                 icon: UserCircleIcon,
                 path: '/users/profile',
             },
         ],
     },
-    {
-        title: 'Access Control',
-        icon: AccessControlIcon,
-        path: '/access-control',
-        children: [
-            {
-                title: 'Roles',
-                icon: RolesIcon,
-                path: '/access-control/roles',
-            },
-        ],
-    }
 ]; 

@@ -7,13 +7,13 @@ const PricesSchema = z.record(
 );
 
 // Allow numbers or "UNLIMITED" → convert "UNLIMITED" → null
-const UnlimitedNumber = z
+const PositiveUnlimitedNumber = z
     .union([
-        z.number().min(0),
+        z.number().gt(0, { message: 'Value must be greater than 0' }),
         z.string().transform((v) => (v?.toUpperCase() === 'UNLIMITED' ? 'UNLIMITED' : v)),
     ])
     .refine((v) => typeof v === 'number' || v === 'UNLIMITED', {
-        message: 'Must be a non-negative number or "UNLIMITED"',
+        message: 'Must be a positive number or "UNLIMITED"',
     })
     .transform((v) => (v === 'UNLIMITED' ? null : (v as number)));
 
@@ -22,8 +22,8 @@ export const CreatePackageDto = z.object({
     body: z.object({
         code: z.nativeEnum(PackageCode),
         prices: PricesSchema,
-        projectsPerMonth: UnlimitedNumber,
-        contactClicksPerProject: UnlimitedNumber,
+        projectsPerMonth: PositiveUnlimitedNumber,
+        contactClicksPerProject: PositiveUnlimitedNumber,
         notes: z.string().max(200).optional(),
     }),
 });
@@ -33,8 +33,8 @@ export const UpdatePackageDto = z.object({
     body: z.object({
         code: z.nativeEnum(PackageCode),
         prices: PricesSchema.optional(),
-        projectsPerMonth: UnlimitedNumber.optional(),
-        contactClicksPerProject: UnlimitedNumber.optional(),
+        projectsPerMonth: PositiveUnlimitedNumber,
+        contactClicksPerProject: PositiveUnlimitedNumber,
         notes: z.string().max(200).optional(),
     }).refine((v) => Object.keys(v).length > 0, { message: 'No fields to update' }),
 });

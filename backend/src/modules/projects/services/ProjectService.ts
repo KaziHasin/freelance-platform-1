@@ -18,6 +18,8 @@ export class ProjectService {
 
     const clientId = data.clientId;
     const subscription = await this.subscriptionRepo.getActiveSubscription(clientId as Types.ObjectId);
+    console.log("subscription", subscription);
+
     if (!subscription) {
       throw new Error("You do not have an active subscription.");
     }

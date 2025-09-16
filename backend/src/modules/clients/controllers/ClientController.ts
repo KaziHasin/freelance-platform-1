@@ -17,8 +17,8 @@ export const createClient = [
 export const listClients = [
     validate(ListQueryDto),
     asyncHandler(async (req: Request, res: Response) => {
-        const { page, limit, search } = req.query as any;
-        const result = await service.list(search, Number(page), Number(limit));
+        const { page, limit, search, status } = req.query as any;
+        const result = await service.list(search, status, Number(page), Number(limit));
         res.json(result);
     }),
 ];

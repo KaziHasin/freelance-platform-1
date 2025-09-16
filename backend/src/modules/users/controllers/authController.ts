@@ -1,5 +1,5 @@
 import { asyncHandler } from "@/common/utils/asyncHandler";
-import { EmailSignupDto, EmailLoginDto, GoogleAuthDto, PhoneRequestDto, PhoneOtpVerifyDto, RefreshTokenDto, } from "../dtos/AuthDto";
+import { EmailSignupDto, EmailLoginDto, GoogleAuthDto, PhoneRequestDto, PhoneOtpVerifyDto } from "../dtos/AuthDto";
 import { Request, Response } from 'express';
 import { validate } from "@/common/middleware/validate";
 import { EmailAuthService } from "../services/emailAuthService";
@@ -62,11 +62,13 @@ export const googleAuth = [
 ]
 
 export const refreshToken = [
-    validate(RefreshTokenDto),
     asyncHandler(async (req: Request, res: Response) => {
-        const { refreshToken } = req.body;
+        const token = req.cookies?.refreshToken;
+        if (!token) {
+            return res.status(403).json({ message: "No refresh token provided" });
+        }
 
-        const decoded = authService.verifyRefreshToken(refreshToken) as JwtPayload | null;
+        const decoded = authService.verifyRefreshToken(token) as JwtPayload | null;
         if (!decoded) {
             return res.status(403).json({ message: "Invalid refresh token" });
         }

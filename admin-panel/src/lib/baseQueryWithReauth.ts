@@ -26,7 +26,12 @@ export const baseQueryWithReauth: BaseQueryFn<
 
     if (result.error && result.error.status === 401) {
         // try refresh
-        const refreshResult = await rawBaseQuery(API_ENDPOINTS.AUTH.REFRESH, api, extraOptions) as { data?: RefreshResponse };
+        const refreshResult = await rawBaseQuery(
+            { url: API_ENDPOINTS.AUTH.REFRESH, method: "POST" },
+            api,
+            extraOptions
+        ) as { data?: RefreshResponse };
+
 
         if (refreshResult.data?.user) {
             console.log("re-fetched user", refreshResult.data.user);

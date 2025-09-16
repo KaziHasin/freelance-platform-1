@@ -58,5 +58,12 @@ export const ListQueryDto = z.object({
         page: z.coerce.number().min(1).default(1),
         limit: z.coerce.number().min(1).max(100).default(20),
         search: z.string().optional(),
-    }).strict(),
+        status: z
+            .string()
+            .optional()
+            .transform((val) => val?.toUpperCase())
+            .refine((val) => !val || ['ACTIVE', 'INACTIVE'].includes(val), {
+                message: 'Invalid status',
+            }),
+    }),
 });

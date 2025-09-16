@@ -5,13 +5,6 @@ export const formatCurrency = (amount: number): string => {
     }).format(amount);
 };
 
-export const formatDate = (date: Date): string => {
-    return new Intl.DateTimeFormat('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-    }).format(date);
-};
 
 export const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes';
@@ -23,4 +16,22 @@ export const formatFileSize = (bytes: number): string => {
 
 export const formatPercentage = (value: number): string => {
     return `${value > 0 ? '+' : ''}${value}%`;
-}; 
+};
+
+export const capitalizeFirstLetter = (str?: string | null): string => {
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+export function formatDate(isoString: string): string {
+    if (!isoString) return "N/A";
+    const date = new Date(isoString);
+    return date.toLocaleString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+    });
+}

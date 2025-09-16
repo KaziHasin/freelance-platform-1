@@ -61,7 +61,6 @@ const TableFilter: React.FC<TableFilterProps> = ({ onFilterChange, roles }) => {
                         <option value="">Select Status</option>
                         <option value="ACTIVE">Active</option>
                         <option value="INACTIVE">Inactive</option>
-                        <option value="PENDING">Pending</option>
                     </select>
                 </div>
 
