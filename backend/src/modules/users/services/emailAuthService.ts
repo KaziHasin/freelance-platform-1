@@ -34,7 +34,8 @@ export class EmailAuthService {
 
 
         const tokens = this.authService.generateTokens(user);
-        return { user, tokens };
+        const { passwordHash, __v, ...safeUser } = user.toObject();
+        return { user: safeUser, tokens };
     }
 
     async login(data: { email: string; password: string }) {
@@ -48,6 +49,9 @@ export class EmailAuthService {
 
         const tokens = this.authService.generateTokens(user);
 
-        return { user, tokens };
+        const { passwordHash, __v, ...safeUser } = user.toObject();
+
+        return { user: safeUser, tokens };
     }
+
 }

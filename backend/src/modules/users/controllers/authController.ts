@@ -61,6 +61,25 @@ export const googleAuth = [
     })
 ]
 
+export const authMe = [
+    asyncHandler(async (req: Request, res: Response) => {
+        const userId = (req.user as JwtPayload)?.id;
+
+        const user = await userService.get(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.json({
+            id: user._id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+        });
+    }),
+];
+
+
 export const refreshToken = [
     asyncHandler(async (req: Request, res: Response) => {
         const token = req.cookies?.refreshToken;
@@ -105,9 +124,6 @@ export const logout = [
             secure: process.env.NODE_ENV === "production",
             sameSite: "strict",
         });
-
-        // Optionally: if you store refresh tokens in DB, invalidate/remove them here
-        // await authService.invalidateRefreshToken(userId);
 
         res.json({ success: true, message: "Logged out successfully" });
     }),

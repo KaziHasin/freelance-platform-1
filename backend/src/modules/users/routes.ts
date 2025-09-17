@@ -2,7 +2,7 @@ import { Router } from 'express';
 import {
     createUser, listUsers, getUser, updateUser, deleteUser, updateStatus
 } from './controllers/UserController';
-import { emailLogin, emailSignup, googleAuth, requestOtp, verifyPhoneOtp, refreshToken, logout } from './controllers/authController';
+import { emailLogin, emailSignup, authMe, googleAuth, requestOtp, verifyPhoneOtp, refreshToken, logout } from './controllers/authController';
 import { authMiddleware } from '@/common/middleware/authMiddleware';
 import { authorize } from '@/common/middleware/authorizeMiddleware';
 import { Role } from '@/common/types/enums';
@@ -20,6 +20,8 @@ router.patch('/users/:id/status', authMiddleware, authorize(Role.ADMIN), updateS
 router.post("/auth/email/signup", emailSignup);
 router.post("/auth/email/login", emailLogin);
 
+router.get("/auth/me", authMiddleware, authorize(Role.ADMIN, Role.CLIENT, Role.DEVELOPER), authMe)
+
 router.post("/auth/phone/request-otp", requestOtp);
 router.post("/auth/phone/verify-otp", verifyPhoneOtp);
 
@@ -28,5 +30,6 @@ router.post("/auth/google", googleAuth);
 router.post('/auth/refresh', refreshToken);
 
 router.post('/auth/logout', authMiddleware, logout);
+
 
 export default router;

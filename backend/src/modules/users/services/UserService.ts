@@ -41,6 +41,7 @@ export class UserService {
     get(id: string) {
         return this.repo.findById(id);
     }
+
     async list(q?: string, role?: string, status?: string, page = 1, limit = 20) {
         const filter: any = {};
 
