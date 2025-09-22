@@ -15,7 +15,7 @@ const ClientView = lazy(() => import('@/pages/panel/Admins/clients/View'));
 const Developers = lazy(() => import('@/pages/panel/Admins/developers/Index'));
 const DeveloperView = lazy(() => import('@/pages/panel/Admins/developers/View'));
 
-const adminRoutes = (
+const AdminRoutes = (
     <>
         <Route
             path="/admin"
@@ -134,4 +134,4 @@ const adminRoutes = (
     </>
 );
 
-export default adminRoutes;
+export default AdminRoutes;

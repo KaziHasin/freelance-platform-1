@@ -1,8 +1,12 @@
 import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import AdminRoutes from "./AdminRoutes";
+import ClientRoutes from "./ClientRoutes";
 
-import adminRoutes from "./adminRoutes";
+
+
+
 const Home = lazy(() => import("@/pages/home/Home"));
 const Signin = lazy(() => import("@/pages/home/auth/Signin"));
 const Signup = lazy(() => import("@/pages/home/auth/Signup"));
@@ -21,7 +25,8 @@ const AppRoutes = () => {
                 <Route path="/admin/login" element={<AdminLogin />} />
 
                 {/* Grouped Routes */}
-                {adminRoutes}
+                {AdminRoutes}
+                {ClientRoutes}
 
                 {/* Catch-all */}
                 <Route path="*" element={<Navigate to="/" />} />

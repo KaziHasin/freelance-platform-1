@@ -1,5 +1,5 @@
 import React from 'react';
-import HeaderLayout from './HeaderLayout';
+import HeaderLayout from '../HeaderLayout';
 
 interface PageLayoutProps {
     title: string;

@@ -1,8 +1,8 @@
 import React from 'react';
-import Card from '../components/ui/Card';
-import Button from '../components/ui/Button';
-import Alert from '../components/ui/Alert';
-import Table from '../components/ui/Table';
+import Card from '@/components/ui/Card';
+import Button from '@/components/ui/Button';
+import Alert from '@/components/ui/Alert';
+import Table from '@/components/ui/Table';
 
 interface User {
     id: number;

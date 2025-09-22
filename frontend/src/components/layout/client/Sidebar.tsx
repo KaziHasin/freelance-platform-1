@@ -7,7 +7,7 @@ import {
     BellIcon,
     UserCircleIcon,
 } from '@heroicons/react/24/outline';
-import { menuItems, type MenuItem } from '@/constants/adminMenu';
+import { menuItems, type MenuItem } from '@/constants/clientMenu';
 
 interface SidebarProps {
     collapsed: boolean;
@@ -142,7 +142,7 @@ const Sidebar = ({ collapsed, isMobile = false, onClose }: SidebarProps) => {
 
                 <div className="px-4 py-6">
                     <h1 className={`text-xl font-bold text-gray-800 dark:text-white ${collapsed ? 'hidden' : 'block'}`}>
-                        Admin Panel
+                        Client Panel
                     </h1>
                 </div>
 
