@@ -3,17 +3,17 @@ import { Route } from "react-router-dom";
 import AdminProtectedRoute from "@/components/auth/AdminProtectedRoute";
 import Layout from "@/components/layout/admin/Layout";
 
-const Dashboard = lazy(() => import("@/pages/Dashboard"));
-const Packages = lazy(() => import("@/pages/packages/Index"));
-const CreatePackage = lazy(() => import("@/pages/packages/Create"));
-const EditPackage = lazy(() => import("@/pages/packages/Edit"));
-const Users = lazy(() => import("@/pages/users/Index"));
-const CreateUser = lazy(() => import("@/pages/users/Create"));
-const UserProfile = lazy(() => import("@/pages/users/Profile"));
-const Clients = lazy(() => import('@/pages/clients/Index'));
-const ClientView = lazy(() => import('@/pages/clients/View'));
-const Developers = lazy(() => import('@/pages/developers/Index'));
-const DeveloperView = lazy(() => import('@/pages/developers/View'));
+const Dashboard = lazy(() => import("@/pages/panel/Admins/Dashboard"));
+const Packages = lazy(() => import("@/pages/panel/Admins/packages/Index"));
+const CreatePackage = lazy(() => import("@/pages/panel/Admins/packages/Create"));
+const EditPackage = lazy(() => import("@/pages/panel/Admins/packages/Edit"));
+const Users = lazy(() => import("@/pages/panel/Admins/users/Index"));
+const CreateUser = lazy(() => import("@/pages/panel/Admins/users/Create"));
+const UserProfile = lazy(() => import("@/pages/panel/Admins/users/Profile"));
+const Clients = lazy(() => import('@/pages/panel/Admins/clients/Index'));
+const ClientView = lazy(() => import('@/pages/panel/Admins/clients/View'));
+const Developers = lazy(() => import('@/pages/panel/Admins/developers/Index'));
+const DeveloperView = lazy(() => import('@/pages/panel/Admins/developers/View'));
 
 const adminRoutes = (
     <>

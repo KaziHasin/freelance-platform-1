@@ -4,7 +4,9 @@ import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 import adminRoutes from "./adminRoutes";
 const Home = lazy(() => import("@/pages/home/Home"));
-const Login = lazy(() => import("@/pages/auth/Login"));
+const Signin = lazy(() => import("@/pages/home/auth/Signin"));
+const Signup = lazy(() => import("@/pages/home/auth/Signup"));
+const AdminLogin = lazy(() => import("@/pages/auth/AdminLogin"));
 
 const AppRoutes = () => {
     return (
@@ -12,9 +14,11 @@ const AppRoutes = () => {
             <Routes>
                 {/* Public */}
                 <Route path="/" element={<Home />} />
+                <Route path="/signin" element={<Signin />} />
+                <Route path="/signup" element={<Signup />} />
 
                 {/* Admin login */}
-                <Route path="/admin/login" element={<Login />} />
+                <Route path="/admin/login" element={<AdminLogin />} />
 
                 {/* Grouped Routes */}
                 {adminRoutes}
