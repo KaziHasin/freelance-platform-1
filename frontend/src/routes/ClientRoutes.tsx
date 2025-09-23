@@ -3,6 +3,7 @@ import { Route } from "react-router-dom";
 import Layout from "@/components/layout/client/Layout";
 
 const Dashboard = lazy(() => import("@/pages/panel/Clients/Dashboard"));
+const Packages = lazy(() => import("@/pages/panel/Clients/Packages"));
 
 
 const ClientRoutes = (
@@ -13,6 +14,16 @@ const ClientRoutes = (
 
                 <Layout>
                     <Dashboard />
+                </Layout>
+            }
+        />
+        <Route />
+        <Route
+            path="/client/packages"
+            element={
+
+                <Layout>
+                    <Packages />
                 </Layout>
             }
         />

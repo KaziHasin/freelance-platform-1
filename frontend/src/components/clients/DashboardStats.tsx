@@ -1,5 +1,10 @@
 import React from 'react';
-import { CurrencyDollarIcon, ChartBarIcon, ClockIcon, UserGroupIcon } from '@heroicons/react/24/outline';
+import {
+    CurrencyDollarIcon,
+    ChartBarIcon,
+    ClockIcon,
+    UserGroupIcon
+} from '@heroicons/react/24/outline';
 
 interface StatCardProps {
     title: string;
@@ -10,21 +15,33 @@ interface StatCardProps {
 }
 
 const StatCard: React.FC<StatCardProps> = ({ title, value, change, isIncrease, icon }) => (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 transition-colors">
         <div className="flex items-center justify-between">
             <div>
-                <p className="text-gray-500 text-sm font-medium">{title}</p>
-                <p className="text-2xl font-semibold mt-2">{value}</p>
+                <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">{title}</p>
+                <p className="text-2xl font-semibold mt-2 text-gray-900 dark:text-white">
+                    {value}
+                </p>
             </div>
-            <div className="text-green-600 bg-green-100 p-3 rounded-full">
+            <div
+                className={`p-3 rounded-full 
+                ${isIncrease
+                        ? 'text-green-600 bg-green-100 dark:bg-green-900/40'
+                        : 'text-red-600 bg-red-100 dark:bg-red-900/40'
+                    }`}
+            >
                 {icon}
             </div>
         </div>
         <div className="mt-4 flex items-center">
-            <span className={`text-sm font-medium ${isIncrease ? 'text-green-600' : 'text-red-600'}`}>
+            <span
+                className={`text-sm font-medium ${isIncrease ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}
+            >
                 {change}
             </span>
-            <span className="text-gray-500 text-sm ml-2">vs last month</span>
+            <span className="text-gray-500 dark:text-gray-400 text-sm ml-2">
+                vs last month
+            </span>
         </div>
     </div>
 );

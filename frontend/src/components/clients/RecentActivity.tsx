@@ -36,28 +36,40 @@ const recentActivity = [
 const ActivityItem = ({ activity }: { activity: any }) => (
     <div className="flex items-start space-x-4 py-4">
         <div className="min-w-0 flex-1">
-            <p className="text-sm font-medium text-gray-900">{activity.project}</p>
-            <p className="text-sm text-gray-500">{activity.description}</p>
+            <p className="text-sm font-medium text-gray-900 dark:text-white">
+                {activity.project}
+            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+                {activity.description}
+            </p>
         </div>
         <div className="flex-shrink-0 flex flex-col items-end">
             {activity.amount && (
-                <p className={`text-sm font-medium ${activity.amount.startsWith('+') ? 'text-green-600' : 'text-red-600'
-                    }`}>
+                <p
+                    className={`text-sm font-medium ${activity.amount.startsWith('+')
+                            ? 'text-green-600 dark:text-green-400'
+                            : 'text-red-600 dark:text-red-400'
+                        }`}
+                >
                     {activity.amount}
                 </p>
             )}
-            <p className="text-sm text-gray-500">{activity.date}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+                {activity.date}
+            </p>
         </div>
     </div>
 );
 
 const RecentActivity = () => {
     return (
-        <div className="bg-white rounded-lg shadow">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow transition-colors">
             <div className="p-6">
-                <h3 className="text-lg font-medium text-gray-900">Recent Activity</h3>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                    Recent Activity
+                </h3>
                 <div className="mt-6 flow-root">
-                    <ul className="-my-5 divide-y divide-gray-200">
+                    <ul className="-my-5 divide-y divide-gray-200 dark:divide-gray-700">
                         {recentActivity.map((activity) => (
                             <li key={activity.id}>
                                 <ActivityItem activity={activity} />
@@ -68,7 +80,13 @@ const RecentActivity = () => {
                 <div className="mt-6">
                     <button
                         type="button"
-                        className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                        className="w-full flex justify-center items-center px-4 py-2 
+                                   border border-gray-300 dark:border-gray-600 
+                                   shadow-sm text-sm font-medium 
+                                   rounded-md text-gray-700 dark:text-gray-200 
+                                   bg-white dark:bg-gray-700 
+                                   hover:bg-gray-50 dark:hover:bg-gray-600 
+                                   transition-colors"
                     >
                         View all activity
                     </button>

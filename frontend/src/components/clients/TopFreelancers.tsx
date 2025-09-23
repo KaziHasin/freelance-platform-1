@@ -1,5 +1,5 @@
 import React from 'react';
-import { StarIcon, ClockIcon, UserGroupIcon } from '@heroicons/react/24/outline';
+import { StarIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 
 const TopFreelancers = () => {
     const freelancers = [
@@ -33,11 +33,11 @@ const TopFreelancers = () => {
     ];
 
     return (
-        <div className="bg-white rounded-lg shadow">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow transition-colors">
             <div className="p-6">
-                <h3 className="text-lg font-medium text-gray-900">Top Freelancers</h3>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white">Top Freelancers</h3>
                 <div className="mt-6 flow-root">
-                    <ul className="-my-5 divide-y divide-gray-200">
+                    <ul className="-my-5 divide-y divide-gray-200 dark:divide-gray-700">
                         {freelancers.map((freelancer) => (
                             <li key={freelancer.id} className="py-4">
                                 <div className="flex items-center space-x-4">
@@ -49,20 +49,20 @@ const TopFreelancers = () => {
                                         />
                                     </div>
                                     <div className="min-w-0 flex-1">
-                                        <p className="text-sm font-medium text-gray-900 truncate">
+                                        <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
                                             {freelancer.name}
                                         </p>
-                                        <p className="text-sm text-gray-500 truncate">{freelancer.role}</p>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400 truncate">{freelancer.role}</p>
                                         <div className="flex items-center mt-1">
                                             <StarIcon className="h-4 w-4 text-yellow-400" />
-                                            <span className="text-sm text-gray-500 ml-1">{freelancer.rating}</span>
-                                            <span className="mx-2 text-gray-300">·</span>
-                                            <UserGroupIcon className="h-4 w-4 text-gray-400" />
-                                            <span className="text-sm text-gray-500 ml-1">{freelancer.projects} projects</span>
+                                            <span className="text-sm text-gray-500 dark:text-gray-400 ml-1">{freelancer.rating}</span>
+                                            <span className="mx-2 text-gray-300 dark:text-gray-600">·</span>
+                                            <UserGroupIcon className="h-4 w-4 text-gray-400 dark:text-gray-500" />
+                                            <span className="text-sm text-gray-500 dark:text-gray-400 ml-1">{freelancer.projects} projects</span>
                                         </div>
                                     </div>
                                     <div className="flex-shrink-0 text-right">
-                                        <p className="text-sm font-medium text-green-600">{freelancer.hourlyRate}</p>
+                                        <p className="text-sm font-medium text-green-600 dark:text-green-400">{freelancer.hourlyRate}</p>
                                     </div>
                                 </div>
                             </li>
@@ -72,7 +72,13 @@ const TopFreelancers = () => {
                 <div className="mt-6">
                     <button
                         type="button"
-                        className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                        className="w-full flex justify-center items-center px-4 py-2 
+                                   border border-gray-300 dark:border-gray-600 
+                                   shadow-sm text-sm font-medium 
+                                   rounded-md text-gray-700 dark:text-gray-200 
+                                   bg-white dark:bg-gray-700 
+                                   hover:bg-gray-50 dark:hover:bg-gray-600 
+                                   transition-colors"
                     >
                         View all freelancers
                     </button>

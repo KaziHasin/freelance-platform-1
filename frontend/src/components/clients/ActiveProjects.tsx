@@ -41,24 +41,34 @@ const projects = [
 ];
 
 const ProjectCard = ({ project }: { project: any }) => (
-    <div className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
+        {/* Header */}
         <div className="flex justify-between items-start">
             <div>
-                <h3 className="text-lg font-semibold text-gray-900">{project.title}</h3>
-                <p className="text-gray-500 mt-1">Freelancer: {project.freelancer}</p>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                    {project.title}
+                </h3>
+                <p className="text-gray-500 dark:text-gray-400 mt-1">
+                    Freelancer: {project.freelancer}
+                </p>
             </div>
-            <span className={`px-3 py-1 rounded-full text-sm font-medium
-                ${project.status === 'Completed' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}`}>
+            <span
+                className={`px-3 py-1 rounded-full text-sm font-medium ${project.status === "Completed"
+                        ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                        : "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+                    }`}
+            >
                 {project.status}
             </span>
         </div>
 
+        {/* Progress */}
         <div className="mt-4">
-            <div className="flex justify-between text-sm text-gray-600 mb-2">
+            <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
                 <span>Progress</span>
                 <span>{project.progress}%</span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                 <div
                     className="bg-green-600 h-2 rounded-full"
                     style={{ width: `${project.progress}%` }}
@@ -66,12 +76,13 @@ const ProjectCard = ({ project }: { project: any }) => (
             </div>
         </div>
 
+        {/* Footer */}
         <div className="mt-4 flex items-center justify-between text-sm">
-            <div className="flex items-center text-gray-500">
+            <div className="flex items-center text-gray-500 dark:text-gray-400">
                 <ClockIcon className="h-4 w-4 mr-1" />
                 {project.timeline}
             </div>
-            <div className="text-green-600 font-medium">
+            <div className="text-green-600 dark:text-green-400 font-medium">
                 {project.budget}
             </div>
         </div>

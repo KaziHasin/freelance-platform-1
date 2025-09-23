@@ -121,7 +121,7 @@ const Sidebar = ({ collapsed, isMobile = false, onClose }: SidebarProps) => {
 
             {/* Sidebar */}
             <aside
-                className={`fixed inset-y-0 left-0 bg-gray-200 dark:bg-gray-900 shadow-sm border-r border-gray-300 dark:border-gray-700 transition-all duration-300 flex flex-col ${isMobile
+                className={`fixed inset-y-0 left-0 bg-gray-100 dark:bg-gray-900 shadow-sm border-r border-gray-300 dark:border-gray-700 transition-all duration-300 flex flex-col ${isMobile
                     ? `w-64 ${collapsed ? '-translate-x-full' : 'translate-x-0'}`
                     : collapsed
                         ? 'w-20'

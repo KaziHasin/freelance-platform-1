@@ -25,7 +25,7 @@ const Header = ({ onMenuClick }: HeaderProps) => {
             {isMobileSearchOpen && (
                 <div className="fixed inset-0 z-50 flex flex-col bg-black bg-opacity-40">
                     <div className="bg-white dark:bg-gray-800 p-4 flex items-center shadow-md">
-                        <MagnifyingGlassIcon className="h-5 w-5 text-gray-500 dark:text-gray-300 mr-2" />
+                        <MagnifyingGlassIcon className="h-5 w-5 text-gray-300 dark:text-gray-200 mr-2" />
                         <input
                             type="text"
                             className="flex-1 bg-transparent outline-none text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-md"
