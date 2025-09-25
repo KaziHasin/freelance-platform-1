@@ -93,7 +93,7 @@ const Packages: React.FC = () => {
                 <div className="flex items-center space-x-2">
                     <EditButton
                         title={`Edit ${plan.name}`}
-                        onClick={() => navigate(`/packages/edit/${plan.id}`)}
+                        onClick={() => navigate(`/admin/packages/edit/${plan.id}`)}
                     />
                     <DeleteButton
                         title={`Delete ${plan.name}`}

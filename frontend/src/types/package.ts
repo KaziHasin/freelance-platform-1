@@ -5,6 +5,10 @@ export interface Package {
     projectsPerMonth: number | null;
     contactClicksPerProject: number | null;
     notes?: string;
+    shortDescription: string,
+    footerText: string,
+    badge: string,
+    features: { value: string }[]
     createdAt: string;
     updatedAt: string;
 }

@@ -197,7 +197,7 @@ const EditPackage: React.FC = () => {
                             variant="danger"
                             className="mr-2"
                             type="button"
-                            onClick={() => navigate('/packages')}
+                            onClick={() => navigate('/admin/packages')}
                         >
                             Cancel
                         </Button>

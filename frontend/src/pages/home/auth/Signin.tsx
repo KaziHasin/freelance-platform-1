@@ -5,6 +5,7 @@ import { PhoneIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
+import Button from '@/components/ui/Button';
 
 type AuthMethod = 'email' | 'phone';
 type VerificationMethod = 'password' | 'otp';
@@ -209,13 +210,13 @@ const Signin = () => {
                             </div>
                         </div>
 
-                        <button
+                        <Button
                             type="submit"
-                            disabled={isSubmitting}
+                            isLoading={isLoading}
                             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                         >
-                            {isSubmitting ? 'Signing in...' : 'Sign in'}
-                        </button>
+                            Sign in
+                        </Button>
                     </form>
 
                     {/* Social login */}

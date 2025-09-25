@@ -55,6 +55,7 @@ export const useAuth = () => {
             console.error('Server logout failed:', error);
         } finally {
             dispatch(logoutAction());
+            dispatch(setLoading(false));
             console.log('Local logout completed');
         }
     };

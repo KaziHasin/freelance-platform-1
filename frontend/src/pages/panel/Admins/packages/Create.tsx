@@ -8,7 +8,7 @@ import { CreatePackageRequest } from '@/types/package';
 import FormSectionHeader from '@/components/forms/sections/FormSectionHeader';
 import { TextInput } from '@/components/forms/inputs/TextInput';
 import { TextArea } from '@/components/forms/inputs/TextArea';
-import { PlusIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, MinusIcon } from '@heroicons/react/24/outline';
 import { SelectBox } from '@/components/forms/inputs/SelectBox';
 
 const CreatePackage: React.FC = () => {
@@ -21,15 +21,27 @@ const CreatePackage: React.FC = () => {
         control,
         formState: { errors },
         setError,
-    } = useForm<CreatePackageRequest & { pricePairs: { currency: string; amount: number }[] }>({
-        defaultValues: {
-            pricePairs: [{ currency: '', amount: 0 }],
-        },
-    });
+    } = useForm<CreatePackageRequest &
+    {
+        pricePairs: { currency: string; amount: number }[],
+        features: { value: string }[]
+    }>
+            ({
+                defaultValues: {
+                    pricePairs: [{ currency: '', amount: 0 }],
+                    features: [{ value: '' }],
+
+                },
+            });
 
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'pricePairs',
+    });
+
+    const { fields: featureFields, append: appendFeature, remove: removeFeature } = useFieldArray({
+        control,
+        name: 'features',
     });
 
     const onSubmit = async (data: any) => {
@@ -41,16 +53,24 @@ const CreatePackage: React.FC = () => {
                 }
             });
 
+            const features = (data.features || []).map(
+                (f: { value: string }) => f.value
+            );
+
             const payload: CreatePackageRequest = {
                 code: data.code,
                 prices,
                 projectsPerMonth: Number(data.projectsPerMonth),
                 contactClicksPerProject: Number(data.contactClicksPerProject),
                 notes: data.notes,
+                shortDescription: data.shortDescription,
+                footerText: data.footerText,
+                badge: data.badge,
+                features,
             };
 
             await createPackage(payload).unwrap();
-            navigate('/packages', { state: 'created' });
+            navigate('/admin/packages', { state: 'created' });
         } catch (error: any) {
             if (error?.data?.details) {
                 const serverErrors = error.data.details;
@@ -105,6 +125,7 @@ const CreatePackage: React.FC = () => {
                                 <TextInput
                                     label="Projects Per Month"
                                     type="number"
+                                    placeholder="Enter Projects Per Month"
                                     required
                                     {...register('projectsPerMonth')}
                                 />
@@ -120,6 +141,7 @@ const CreatePackage: React.FC = () => {
                                 <TextInput
                                     label="Contact Clicks Per Project"
                                     type="number"
+                                    placeholder="Enter Contact Clicks Per Project"
                                     required
                                     {...register('contactClicksPerProject')}
                                 />
@@ -130,8 +152,53 @@ const CreatePackage: React.FC = () => {
                                 )}
                             </div>
 
-                            {/* Notes */}
+                            {/* Short Description */}
                             <div>
+                                <TextInput
+                                    label="Short Description"
+                                    placeholder="Enter short description"
+                                    required
+                                    {...register("shortDescription")}
+                                />
+                                {errors.shortDescription && (
+                                    <span className="text-sm text-red-500">
+                                        {errors.shortDescription.message}
+                                    </span>
+                                )}
+                            </div>
+
+                            {/* Footer Text */}
+                            <div>
+                                <TextInput
+                                    label="Footer Text"
+                                    placeholder="Enter footer text"
+                                    required
+                                    {...register("footerText")}
+                                />
+                                {errors.footerText && (
+                                    <span className="text-sm text-red-500">
+                                        {errors.footerText.message}
+                                    </span>
+                                )}
+                            </div>
+
+                            {/* Badge */}
+                            <div>
+                                <TextInput
+                                    label="Badge"
+                                    placeholder="Enter badge text"
+                                    {...register("badge")}
+                                />
+                                {errors.badge && (
+                                    <span className="text-sm text-red-500">
+                                        {errors.badge.message}
+                                    </span>
+                                )}
+                            </div>
+
+
+                            {/* Notes */}
+                            <div className="md:col-span-2">
                                 <TextArea
                                     label="Notes"
                                     name="notes"
@@ -139,58 +206,114 @@ const CreatePackage: React.FC = () => {
                                     rows={4}
                                     {...register('notes')}
                                 />
+                            </div>
 
+                            {/* Dynamic Features */}
+                            <div>
+                                <label className="text-sm font-medium mb-2 flex items-center justify-between">
+                                    <span>Features</span>
+                                    <Button
+                                        type="button"
+                                        variant="primary"
+                                        onClick={() => appendFeature({ value: '' })}
+                                        size="sm"
+                                    >
+                                        <PlusIcon className="w-4 h-4 text-white" />
+                                    </Button>
+                                </label>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {featureFields.map((field, index) => (
+                                        <div
+                                            key={field.id}
+                                            className="relative border rounded-lg shadow-sm bg-white dark:bg-gray-800 p-4"
+                                        >
+                                            {/* Top right action buttons */}
+                                            <div className="absolute -top-2 -right-2 flex gap-1">
+                                                {index > 0 && (
+                                                    <Button
+                                                        type="button"
+                                                        variant="danger"
+                                                        className="z-10"
+                                                        size="sm"
+                                                        onClick={() => removeFeature(index)}
+                                                    >
+                                                        <MinusIcon className="w-3 h-3 text-white" />
+                                                    </Button>
+                                                )}
+                                            </div>
+
+                                            {/* Feature input */}
+                                            <TextInput
+                                                placeholder={`Feature ${index + 1}`}
+                                                {...register(`features.${index}.value` as const)}
+                                                className="w-full"
+                                            />
+                                        </div>
+                                    ))}
+
+                                </div>
                             </div>
 
                             {/* Dynamic Prices */}
                             <div>
-                                <label className=" text-sm font-medium mb-2 flex content-between">
-                                    <span className='me-1'>
-                                        Prices
-                                    </span>
+                                <label className="text-sm font-medium mb-2 flex items-center justify-between">
+                                    <span>Prices</span>
                                     <Button
                                         type="button"
                                         variant="primary"
                                         onClick={() => append({ currency: '', amount: 0 })}
-                                        size='sm'
-                                        className=''
+                                        size="sm"
                                     >
-                                        <PlusIcon className="w-2 h-2 text-white" />
-                                    </Button></label>
-                                {fields.map((field, index) => (
-                                    <div key={field.id} className="flex items-center gap-3 mb-2">
-                                        <TextInput
-                                            placeholder="Currency (e.g. USD)"
-                                            className="w-28"
-                                            {...register(`pricePairs.${index}.currency` as const, {
-                                                pattern: {
-                                                    value: /^[A-Z]{3}$/,
-                                                    message: 'Must be 3 uppercase letters',
-                                                },
-                                            })}
-                                        />
-                                        <TextInput
-                                            type="number"
-                                            placeholder="Amount"
-                                            className=""
-                                            {...register(`pricePairs.${index}.amount` as const, {
-                                                min: { value: 0, message: 'Must be ≥ 0' },
-                                            })}
-                                        />
-                                        {fields.length > 1 && (
-                                            <Button
-                                                type="button"
-                                                variant="danger"
-                                                onClick={() => remove(index)}
-                                                size='sm'
-                                            >
-                                                -
-                                            </Button>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
+                                        <PlusIcon className="w-4 h-4 text-white" />
+                                    </Button>
+                                </label>
 
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {fields.map((field, index) => (
+                                        <div
+                                            key={field.id}
+                                            className="relative border  rounded-lg shadow-sm bg-white dark:bg-gray-800 p-4"
+                                        >
+                                            {/* Top right action buttons */}
+                                            <div className="absolute -top-2 -right-2 flex gap-1">
+                                                {index > 0 && (
+                                                    <Button
+                                                        type="button"
+                                                        variant="danger"
+                                                        className="z-10"
+                                                        size="sm"
+                                                        onClick={() => remove(index)}
+                                                    >
+                                                        <MinusIcon className="w-3 h-3 text-white" />
+                                                    </Button>
+                                                )}
+                                            </div>
+
+                                            {/* Price inputs */}
+                                            <div className="flex gap-3">
+                                                <TextInput
+                                                    placeholder="Currency (e.g. USD)"
+                                                    className="w-28"
+                                                    {...register(`pricePairs.${index}.currency` as const, {
+                                                        pattern: {
+                                                            value: /^[A-Z]{3}$/,
+                                                            message: 'Must be 3 uppercase letters',
+                                                        },
+                                                    })}
+                                                />
+                                                <TextInput
+                                                    type="number"
+                                                    placeholder="Amount"
+                                                    {...register(`pricePairs.${index}.amount` as const, {
+                                                        min: { value: 0, message: 'Must be ≥ 0' },
+                                                    })}
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -199,11 +322,11 @@ const CreatePackage: React.FC = () => {
                             variant="danger"
                             className="mr-2"
                             type="button"
-                            onClick={() => navigate('/packages')}
+                            onClick={() => navigate('/admin/packages')}
                         >
                             Cancel
                         </Button>
-                        <Button type="submit" disabled={isLoading}>
+                        <Button type="submit" >
                             {isLoading ? 'Submitting...' : 'Submit'}
                         </Button>
                     </div>

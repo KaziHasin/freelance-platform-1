@@ -11,6 +11,10 @@ export interface IPackage extends Document {
     projectsPerMonth: number | null;
     contactClicksPerProject: number | null;
     notes?: string;
+    shortDescription?: string;
+    footerText?: string;
+    badge?: string;
+    features: string[];
     createdAt: Date;
     updatedAt: Date;
 }
@@ -32,6 +36,10 @@ const packageSchema = new Schema<IPackage>(
         projectsPerMonth: { type: Number, default: null, min: 0 },
         contactClicksPerProject: { type: Number, default: null, min: 0 },
         notes: { type: String },
+        shortDescription: { type: String, default: '' },
+        footerText: { type: String, default: '' },
+        badge: { type: String, default: '' },
+        features: { type: [String], default: [] },
     },
     { timestamps: true }
 );

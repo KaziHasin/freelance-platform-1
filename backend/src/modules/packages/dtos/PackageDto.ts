@@ -6,7 +6,6 @@ const PricesSchema = z.record(
     z.number().min(0, 'Price must be ≥ 0')
 );
 
-// Allow numbers or "UNLIMITED" → convert "UNLIMITED" → null
 const PositiveUnlimitedNumber = z
     .union([
         z.number().gt(0, { message: 'Value must be greater than 0' }),
@@ -18,25 +17,36 @@ const PositiveUnlimitedNumber = z
     .transform((v) => (v === 'UNLIMITED' ? null : (v as number)));
 
 
+const PackageBaseSchema = {
+    code: z.nativeEnum(PackageCode),
+    prices: PricesSchema,
+    projectsPerMonth: PositiveUnlimitedNumber,
+    contactClicksPerProject: PositiveUnlimitedNumber,
+    shortDescription: z.string().min(1, 'Short description is required').max(50, 'No more than 50 characters are allowed'),
+    footerText: z.string().min(1, 'Footer text is required').max(50, 'No more than 50 characters are allowed'),
+    badge: z.string().max(15, 'No more than 15 characters are allowed').optional(),
+    features: z
+        .array(z.string().min(1, 'Feature cannot be empty'))
+        .min(1, 'At least one feature is required')
+        .max(6, 'No more than 6 features are allowed'),
+    notes: z.string().max(200).optional(),
+};
+
 export const CreatePackageDto = z.object({
-    body: z.object({
-        code: z.nativeEnum(PackageCode),
-        prices: PricesSchema,
-        projectsPerMonth: PositiveUnlimitedNumber,
-        contactClicksPerProject: PositiveUnlimitedNumber,
-        notes: z.string().max(200).optional(),
-    }),
+    body: z.object(PackageBaseSchema),
 });
 
 export const UpdatePackageDto = z.object({
     params: z.object({ id: z.string().length(24, 'Invalid id') }),
-    body: z.object({
-        code: z.nativeEnum(PackageCode),
-        prices: PricesSchema.optional(),
-        projectsPerMonth: PositiveUnlimitedNumber,
-        contactClicksPerProject: PositiveUnlimitedNumber,
-        notes: z.string().max(200).optional(),
-    }).refine((v) => Object.keys(v).length > 0, { message: 'No fields to update' }),
+    body: z
+        .object({
+            ...PackageBaseSchema,
+            prices: PricesSchema.optional(),
+        })
+        .partial()
+        .refine((v) => Object.keys(v).length > 0, {
+            message: 'No fields to update',
+        }),
 });
 
 export const ListQueryDto = z.object({
