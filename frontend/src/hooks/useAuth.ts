@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '@/store';
-import { setCredentials, logout as logoutAction, setLoading, updateUser } from '@/store/slices/authSlice';
+import { setCredentials, logout as logoutAction, setLoading, updateUser, useRegisterMutation } from '@/store/slices/authSlice';
 import { useLoginMutation, useLogoutMutation } from '@/store/slices/authSlice';
 
 export const useAuth = () => {
@@ -8,6 +8,7 @@ export const useAuth = () => {
     const { user, isLoading } = useSelector((state: RootState) => state.auth);
 
     const [loginMutation] = useLoginMutation();
+    const [registerMutation] = useRegisterMutation();
     const [logoutMutation] = useLogoutMutation();
 
     const login = async (email: string, password: string): Promise<boolean> => {
@@ -26,9 +27,24 @@ export const useAuth = () => {
         }
     };
 
+    const register = async (data: any): Promise<boolean> => {
+        dispatch(setLoading(true));
+
+        try {
+            const response = await registerMutation(data).unwrap();
+            dispatch(setCredentials({
+                user: response.user
+            }));
+            return true;
+        } catch (error) {
+            dispatch(setLoading(false));
+            return false;
+        }
+    };
+
+
     const logout = async () => {
         try {
-
             if (user) {
                 await logoutMutation().unwrap();
                 console.log('Server logout successful');
@@ -49,6 +65,7 @@ export const useAuth = () => {
     return {
         user,
         login,
+        register,
         logout,
         isLoading,
         updateUserProfile,

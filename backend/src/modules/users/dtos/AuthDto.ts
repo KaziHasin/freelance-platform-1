@@ -13,6 +13,9 @@ export const EmailSignupDto = z.object({
         provider: ProviderEnum,
         role: RoleEnum.default('ADMIN'),
         status: StatusEnum.default('PENDING'),
+    }).refine((data) => data.email || data.phone, {
+        message: "Either email or phone is required",
+        path: ["email"],
     }),
 });
 

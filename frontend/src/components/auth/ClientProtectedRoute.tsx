@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { useGetCurrentUserQuery } from "@/store/slices/authSlice";
-import { getUser } from "@/lib/auth";
+import { getClient } from "@/lib/auth";
 
 interface ClientProtectedRouteProps {
     children: React.ReactNode;
@@ -11,14 +11,14 @@ interface ClientProtectedRouteProps {
 const ClientProtectedRoute: React.FC<ClientProtectedRouteProps> = ({ children }) => {
     const location = useLocation();
 
-    const localUser = getUser();
+    const localClient = getClient();
 
     const {
-        data: serverUser,
+        data: serverClient,
         isLoading,
         isError,
     } = useGetCurrentUserQuery(undefined, {
-        skip: !localUser,
+        skip: !localClient,
     });
 
 
@@ -32,12 +32,12 @@ const ClientProtectedRoute: React.FC<ClientProtectedRouteProps> = ({ children })
             </div>
         );
     }
-    if (!localUser || isError || !serverUser) {
+    if (!localClient || isError || !serverClient) {
         return <Navigate to="/signin" state={{ from: location }} replace />;
     }
 
-    if (serverUser.role !== 'CLIENT') {
-        return <Navigate to="/client" replace />;
+    if (serverClient.role !== 'CLIENT') {
+        return <Navigate to="/" replace />;
     }
 
     return <>{children}</>;

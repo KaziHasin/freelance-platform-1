@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import AdminRoutes from "./AdminRoutes";
 import ClientRoutes from "./ClientRoutes";
+import PublicRoute from "@/components/auth/PublicRoute";
 
 
 
@@ -18,11 +19,27 @@ const AppRoutes = () => {
             <Routes>
                 {/* Public */}
                 <Route path="/" element={<Home />} />
-                <Route path="/signin" element={<Signin />} />
-                <Route path="/signup" element={<Signup />} />
+
+                <Route path="/signin" element={
+                    <PublicRoute>
+                        <Signin />
+                    </PublicRoute>
+                } />
+
+
+                <Route path="/signup" element={
+                    <PublicRoute>
+                        <Signup />
+                    </PublicRoute>
+                } />
 
                 {/* Admin login */}
-                <Route path="/admin/login" element={<AdminLogin />} />
+
+                <Route path="/admin/login" element={
+                    <PublicRoute>
+                        <AdminLogin />
+                    </PublicRoute>
+                } />
 
                 {/* Grouped Routes */}
                 {AdminRoutes}

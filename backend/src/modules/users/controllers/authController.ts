@@ -20,9 +20,11 @@ const userService = new UserService();
 export const emailSignup = [
     validate(EmailSignupDto),
     asyncHandler(async (req: Request, res: Response) => {
-        const result = await emailService.signup(req.body);
-        setAuthCookies(res, result.tokens);
-        res.json({ success: true, result });
+        console.log(req.body); return;
+
+        const { user, tokens } = await emailService.signup(req.body);
+        setAuthCookies(res, tokens);
+        res.json({ success: true, user, tokens });
     }),
 ];
 
@@ -65,10 +67,14 @@ export const authMe = [
     asyncHandler(async (req: Request, res: Response) => {
         const userId = (req.user as JwtPayload)?.id;
 
+        console.log("userId", userId);
+
+
         const user = await userService.get(userId);
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
+        console.log("user", user);
 
         res.json({
             id: user._id,
