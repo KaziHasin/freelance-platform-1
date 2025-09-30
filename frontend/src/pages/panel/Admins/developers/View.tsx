@@ -1,7 +1,7 @@
 import { EmailInput } from "@/components/forms/inputs/EmailInput";
 import { SelectBox } from "@/components/forms/inputs/SelectBox";
 import { TextInput } from "@/components/forms/inputs/TextInput";
-import PageLayout from "@/components/layout/admin/Layout";
+import PageLayout from "@/components/layout/admin/PageLayout";
 import Button from "@/components/ui/Button";
 import Tabs from "@/components/ui/Tabs";
 import { useGetDeveloperQuery, useUpdateDeveloperStatusMutation, useUpdateVerificationStatusMutation } from "@/store/slices/DeveloperSlice";
@@ -15,8 +15,6 @@ import toast from "react-hot-toast";
 const DeveloperView: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const { data, isLoading, isError, refetch } = useGetDeveloperQuery(id!, { skip: !id });
-
-    console.log(data);
 
 
     const breadcrumbs = [

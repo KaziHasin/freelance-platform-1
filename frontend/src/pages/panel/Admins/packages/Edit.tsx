@@ -8,8 +8,9 @@ import { PackageFormValues, UpdatePackageRequest } from '@/types/package';
 import FormSectionHeader from '@/components/forms/sections/FormSectionHeader';
 import { TextInput } from '@/components/forms/inputs/TextInput';
 import { TextArea } from '@/components/forms/inputs/TextArea';
-import { PlusIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, MinusIcon } from '@heroicons/react/24/outline';
 import { SelectBox } from '@/components/forms/inputs/SelectBox';
+import { CheckboxInput } from '@/components/forms/inputs/CheckboxInput';
 
 const EditPackage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -25,6 +26,7 @@ const EditPackage: React.FC = () => {
         reset,
         formState: { errors },
         setError,
+        watch,
     } = useForm<PackageFormValues>();
 
     const { fields, append, remove } = useFieldArray({
@@ -32,17 +34,32 @@ const EditPackage: React.FC = () => {
         name: 'pricePairs',
     });
 
+    const {
+        fields: featureFields,
+        append: appendFeature,
+        remove: removeFeature,
+    } = useFieldArray({
+        control,
+        name: 'features',
+    });
+
     useEffect(() => {
         if (pkg) {
             reset({
                 code: pkg.code,
-                projectsPerMonth: pkg.projectsPerMonth,
-                contactClicksPerProject: pkg.contactClicksPerProject,
+                projectsPerMonth: pkg.projectsPerMonth ?? undefined,
+                contactClicksPerProject: pkg.contactClicksPerProject ?? undefined,
+                unlimitedProjects: pkg.projectsPerMonth === null,
+                unlimitedClicks: pkg.contactClicksPerProject === null,
                 notes: pkg.notes,
+                shortDescription: pkg.shortDescription,
+                footerText: pkg.footerText,
+                badge: pkg.badge,
                 pricePairs: Object.entries(pkg.prices).map(([currency, amount]) => ({
                     currency,
                     amount: Number(amount),
                 })),
+                features: (pkg.features || []).map(f => ({ value: f })),
             });
         }
     }, [pkg, reset]);
@@ -56,21 +73,31 @@ const EditPackage: React.FC = () => {
                 }
             });
 
+            const features = (data.features || []).map(
+                (f: { value: string }) => f.value
+            );
+
+
             const payload: UpdatePackageRequest = {
                 id: id!,
                 code: data.code,
                 prices,
-                projectsPerMonth: Number(data.projectsPerMonth),
-                contactClicksPerProject: Number(data.contactClicksPerProject),
+                projectsPerMonth: data.unlimitedProjects ? null : Number(data.projectsPerMonth),
+                contactClicksPerProject: data.unlimitedClicks ? null : Number(data.contactClicksPerProject),
                 notes: data.notes,
+                shortDescription: data.shortDescription,
+                footerText: data.footerText,
+                badge: data.badge,
+                features,
             };
 
+            console.log(payload.prices);
+
             await updatePackage(payload).unwrap();
-            navigate("/packages", { state: 'updated' });
-        } catch (error) {
+            navigate('/admin/packages', { state: 'updated' });
+        } catch (error: any) {
             if (error?.data?.details) {
                 const serverErrors = error.data.details;
-
                 serverErrors.forEach((err: { field: string; message: string }) => {
                     const fieldName = err.field.replace(/^body\./, '') as keyof UpdatePackageRequest;
                     setError(fieldName as any, {
@@ -81,7 +108,6 @@ const EditPackage: React.FC = () => {
             }
         }
     };
-
 
     const breadcrumbs = [
         { label: 'Manage Packages', path: '/packages' },
@@ -103,28 +129,33 @@ const EditPackage: React.FC = () => {
                                 <SelectBox
                                     label="Code"
                                     required
-                                    {...register("code")}
+                                    {...register('code')}
                                     options={[
-                                        { label: "FREE", value: "FREE" },
-                                        { label: "BASIC", value: "BASIC" },
-                                        { label: "STANDARD", value: "STANDARD" },
-                                        { label: "PREMIUM", value: "PREMIUM" },
+                                        { label: 'FREE', value: 'FREE' },
+                                        { label: 'BASIC', value: 'BASIC' },
+                                        { label: 'STANDARD', value: 'STANDARD' },
+                                        { label: 'PREMIUM', value: 'PREMIUM' },
                                     ]}
                                 />
                                 {errors.code && (
-                                    <span className="text-sm text-red-500">
-                                        {errors.code.message}
-                                    </span>
+                                    <span className="text-sm text-red-500">{errors.code.message}</span>
                                 )}
                             </div>
+
                             {/* Projects per month */}
                             <div>
-                                <TextInput
-                                    label="Projects Per Month"
-                                    type="number"
-                                    required
-                                    {...register('projectsPerMonth')}
-                                />
+                                <div className="flex items-center justify-between gap-3">
+                                    <label className="text-sm font-medium mb-1 block">Projects Per Month</label>
+                                    <CheckboxInput label="Unlimited Projects" {...register('unlimitedProjects')} />
+                                </div>
+
+                                {!watch('unlimitedProjects') && (
+                                    <TextInput
+                                        placeholder="Enter Projects Per Month"
+                                        {...register('projectsPerMonth')}
+                                    />
+                                )}
+
                                 {errors.projectsPerMonth && (
                                     <span className="text-sm text-red-500">
                                         {errors.projectsPerMonth.message}
@@ -134,60 +165,180 @@ const EditPackage: React.FC = () => {
 
                             {/* Contact clicks */}
                             <div>
-                                <TextInput
-                                    label="Contact Clicks Per Project"
-                                    type="number"
-                                    required
-                                    {...register('contactClicksPerProject')}
-                                />
+                                <div className="flex items-center justify-between gap-3">
+                                    <label className="text-sm font-medium mb-1 block">
+                                        Contact Clicks Per Project
+                                    </label>
+                                    <CheckboxInput label="Unlimited Clicks" {...register('unlimitedClicks')} />
+                                </div>
+
+                                {!watch('unlimitedClicks') && (
+                                    <TextInput
+                                        placeholder="Enter Contact Clicks Per Project"
+                                        {...register('contactClicksPerProject')}
+                                    />
+                                )}
+
                                 {errors.contactClicksPerProject && (
                                     <span className="text-sm text-red-500">
                                         {errors.contactClicksPerProject.message}
                                     </span>
                                 )}
                             </div>
-                            {/* Notes */}
+
+                            {/* Short Description */}
                             <div>
-                                <TextArea label="Notes" {...register('notes')} rows={4} />
+                                <TextInput
+                                    label="Short Description"
+                                    placeholder="Enter short description"
+                                    required
+                                    {...register('shortDescription')}
+                                />
+                                {errors.shortDescription && (
+                                    <span className="text-sm text-red-500">
+                                        {errors.shortDescription.message}
+                                    </span>
+                                )}
                             </div>
 
-                            {/* Dynamic Prices */}
+                            {/* Footer Text */}
                             <div>
-                                <label className="text-sm font-medium mb-2 flex ">
-                                    <span className='me-1'>Prices</span>
+                                <TextInput
+                                    label="Footer Text"
+                                    placeholder="Enter footer text"
+                                    required
+                                    {...register('footerText')}
+                                />
+                                {errors.footerText && (
+                                    <span className="text-sm text-red-500">
+                                        {errors.footerText.message}
+                                    </span>
+                                )}
+                            </div>
+
+                            {/* Badge */}
+                            <div>
+                                <TextInput
+                                    label="Badge"
+                                    placeholder="Enter badge text"
+                                    {...register('badge')}
+                                />
+                                {errors.badge && (
+                                    <span className="text-sm text-red-500">{errors.badge.message}</span>
+                                )}
+                            </div>
+
+                            {/* Notes */}
+                            <div className="md:col-span-2">
+                                <TextArea
+                                    label="Notes"
+                                    name="notes"
+                                    placeholder="Enter additional details..."
+                                    rows={4}
+                                    {...register('notes')}
+                                />
+                            </div>
+
+                            {/* Features */}
+                            <div>
+                                <label className="text-sm font-medium mb-2 flex items-center justify-between">
+                                    <span>Features</span>
+                                    <Button
+                                        type="button"
+                                        variant="primary"
+                                        onClick={() => appendFeature({ value: '' })}
+                                        size="sm"
+                                    >
+                                        <PlusIcon className="w-4 h-4 text-white" />
+                                    </Button>
+                                </label>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {featureFields.map((field, index) => (
+                                        <div
+                                            key={field.id}
+                                            className="relative border rounded-lg shadow-sm bg-white dark:bg-gray-800 p-4"
+                                        >
+                                            <div className="absolute -top-2 -right-2 flex gap-1">
+                                                {index > 0 && (
+                                                    <Button
+                                                        type="button"
+                                                        variant="danger"
+                                                        className="z-10"
+                                                        size="sm"
+                                                        onClick={() => removeFeature(index)}
+                                                    >
+                                                        <MinusIcon className="w-3 h-3 text-white" />
+                                                    </Button>
+                                                )}
+                                            </div>
+
+                                            <TextInput
+                                                placeholder={`Feature ${index + 1}`}
+                                                {...register(`features.${index}.value` as const)}
+                                                className="w-full"
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Prices */}
+                            <div>
+                                <label className="text-sm font-medium mb-2 flex items-center justify-between">
+                                    <span>Prices</span>
                                     <Button
                                         type="button"
                                         variant="primary"
                                         onClick={() => append({ currency: '', amount: 0 })}
                                         size="sm"
                                     >
-                                        <PlusIcon className="w-2 h-2 text-white" />
+                                        <PlusIcon className="w-4 h-4 text-white" />
                                     </Button>
                                 </label>
-                                {fields.map((field, index) => (
-                                    <div key={field.id} className="flex items-center gap-3 mb-2">
-                                        <TextInput
-                                            placeholder="Currency"
-                                            className="w-28"
-                                            {...register(`pricePairs.${index}.currency` as const)}
-                                        />
-                                        <TextInput
-                                            type="number"
-                                            placeholder="Amount"
-                                            {...register(`pricePairs.${index}.amount` as const)}
-                                        />
-                                        {fields.length > 1 && (
-                                            <Button
-                                                type="button"
-                                                variant="danger"
-                                                onClick={() => remove(index)}
-                                                size="sm"
-                                            >
-                                                -
-                                            </Button>
-                                        )}
-                                    </div>
-                                ))}
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {fields.map((field, index) => (
+                                        <div
+                                            key={field.id}
+                                            className="relative border rounded-lg shadow-sm bg-white dark:bg-gray-800 p-4"
+                                        >
+                                            <div className="absolute -top-2 -right-2 flex gap-1">
+                                                {index > 0 && (
+                                                    <Button
+                                                        type="button"
+                                                        variant="danger"
+                                                        className="z-10"
+                                                        size="sm"
+                                                        onClick={() => remove(index)}
+                                                    >
+                                                        <MinusIcon className="w-3 h-3 text-white" />
+                                                    </Button>
+                                                )}
+                                            </div>
+
+                                            <div className="flex gap-3">
+                                                <TextInput
+                                                    placeholder="Currency (e.g. USD)"
+                                                    className="w-28"
+                                                    {...register(`pricePairs.${index}.currency` as const, {
+                                                        pattern: {
+                                                            value: /^[A-Z]{1,5}$/,
+                                                            message: 'Must be 1 to 5 uppercase letters',
+                                                        },
+                                                    })}
+                                                />
+
+                                                <TextInput
+                                                    placeholder="Amount"
+                                                    {...register(`pricePairs.${index}.amount` as const, {
+                                                        min: { value: 0, message: 'Must be ≥ 0' },
+                                                    })}
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -201,8 +352,8 @@ const EditPackage: React.FC = () => {
                         >
                             Cancel
                         </Button>
-                        <Button type="submit" disabled={isLoading}>
-                            {isLoading ? 'Updating...' : 'Update'}
+                        <Button type="submit" isLoading={isLoading}>
+                            Update
                         </Button>
                     </div>
                 </div>

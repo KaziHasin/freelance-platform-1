@@ -50,5 +50,8 @@ export const API_ENDPOINTS = {
         CREATE: '/packages',
         UPDATE: (id: string) => `/packages/${id}`,
         DELETE: (id: string) => `/packages/${id}`,
+    },
+    PAYMENT: {
+        CHECKOUT: '/payments/checkout',
     }
 };

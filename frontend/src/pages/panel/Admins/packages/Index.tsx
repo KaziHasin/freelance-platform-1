@@ -58,8 +58,8 @@ const Packages: React.FC = () => {
         id: plan._id,
         code: plan.code,
         prices: plan.prices,
-        projectsPerMonth: plan.projectsPerMonth,
-        contactClicksPerProject: plan.contactClicksPerProject,
+        projectsPerMonth: plan.projectsPerMonth ?? 'UNLIMITED',
+        contactClicksPerProject: plan.contactClicksPerProject ?? 'UNLIMITED',
 
     })) || [];
 

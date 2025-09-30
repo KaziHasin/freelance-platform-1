@@ -8,12 +8,12 @@ const router = Router();
 
 router
     .route('/packages')
-    .get(authMiddleware, authorize(Role.ADMIN), PackageController.listPackages)
+    .get(authMiddleware, authorize(Role.ADMIN, Role.CLIENT), PackageController.listPackages)
     .post(authMiddleware, authorize(Role.ADMIN), PackageController.createPackage);
 
 router
     .route('/packages/:id')
-    .get(authMiddleware, authorize(Role.ADMIN), PackageController.getPackage)
+    .get(authMiddleware, authorize(Role.ADMIN, Role.CLIENT), PackageController.getPackage)
     .put(authMiddleware, authorize(Role.ADMIN), PackageController.updatePackage)
     .delete(authMiddleware, authorize(Role.ADMIN), PackageController.deletePackage);
 

@@ -9,6 +9,12 @@ export class SubscriptionRepository {
     async findById(id: string) {
         return await Subscription.findById(id).populate("clientId packageId");
     }
+    async findOne(
+        filter: FilterQuery<ISubscription>,
+        sort: Record<string, 1 | -1> = {}
+    ) {
+        return await Subscription.findOne(filter).sort(sort).exec();
+    }
     async getActiveSubscription(clientId: Types.ObjectId) {
         console.log("Client Id", clientId);
 

@@ -10,6 +10,7 @@ import { TextInput } from '@/components/forms/inputs/TextInput';
 import { TextArea } from '@/components/forms/inputs/TextArea';
 import { PlusIcon, MinusIcon } from '@heroicons/react/24/outline';
 import { SelectBox } from '@/components/forms/inputs/SelectBox';
+import { CheckboxInput } from '@/components/forms/inputs/CheckboxInput';
 
 const CreatePackage: React.FC = () => {
     const navigate = useNavigate();
@@ -20,11 +21,14 @@ const CreatePackage: React.FC = () => {
         handleSubmit,
         control,
         formState: { errors },
+        watch,
         setError,
     } = useForm<CreatePackageRequest &
     {
         pricePairs: { currency: string; amount: number }[],
-        features: { value: string }[]
+        features: { value: string }[],
+        unlimitedProjects: boolean,
+        unlimitedClicks: boolean,
     }>
             ({
                 defaultValues: {
@@ -53,6 +57,7 @@ const CreatePackage: React.FC = () => {
                 }
             });
 
+
             const features = (data.features || []).map(
                 (f: { value: string }) => f.value
             );
@@ -60,8 +65,8 @@ const CreatePackage: React.FC = () => {
             const payload: CreatePackageRequest = {
                 code: data.code,
                 prices,
-                projectsPerMonth: Number(data.projectsPerMonth),
-                contactClicksPerProject: Number(data.contactClicksPerProject),
+                projectsPerMonth: data.unlimitedProjects ? null : Number(data.projectsPerMonth),
+                contactClicksPerProject: data.unlimitedClicks ? null : Number(data.contactClicksPerProject),
                 notes: data.notes,
                 shortDescription: data.shortDescription,
                 footerText: data.footerText,
@@ -122,33 +127,41 @@ const CreatePackage: React.FC = () => {
 
                             {/* Projects per month */}
                             <div>
-                                <TextInput
-                                    label="Projects Per Month"
-                                    type="number"
-                                    placeholder="Enter Projects Per Month"
-                                    required
-                                    {...register('projectsPerMonth')}
-                                />
+
+                                <div className="flex items-center justify-between gap-3">
+                                    <label className="text-sm font-medium mb-1 block">Projects Per Month</label>
+                                    <CheckboxInput label="Unlimited Projects" {...register("unlimitedProjects")} />
+                                </div>
+
+                                {/* Only show input when NOT unlimited */}
+                                {!watch("unlimitedProjects") && (
+                                    <TextInput
+                                        placeholder="Enter Projects Per Month"
+                                        {...register("projectsPerMonth")}
+                                    />
+                                )}
+
                                 {errors.projectsPerMonth && (
-                                    <span className="text-sm text-red-500">
-                                        {errors.projectsPerMonth.message}
-                                    </span>
+                                    <span className="text-sm text-red-500">{errors.projectsPerMonth.message}</span>
                                 )}
                             </div>
 
                             {/* Contact clicks */}
                             <div>
-                                <TextInput
-                                    label="Contact Clicks Per Project"
-                                    type="number"
-                                    placeholder="Enter Contact Clicks Per Project"
-                                    required
-                                    {...register('contactClicksPerProject')}
-                                />
+                                <div className="flex items-center justify-between gap-3">
+                                    <label className="text-sm font-medium mb-1 block">Contact Clicks Per Project</label>
+                                    <CheckboxInput label="Unlimited Projects" {...register("unlimitedClicks")} />
+                                </div>
+                                {/* Only show input when NOT unlimited */}
+                                {!watch("unlimitedClicks") && (
+                                    <TextInput
+                                        placeholder="Enter Contact Clicks Per Project"
+                                        {...register("contactClicksPerProject")}
+                                    />
+                                )}
+
                                 {errors.contactClicksPerProject && (
-                                    <span className="text-sm text-red-500">
-                                        {errors.contactClicksPerProject.message}
-                                    </span>
+                                    <span className="text-sm text-red-500">{errors.contactClicksPerProject.message}</span>
                                 )}
                             </div>
 
@@ -297,13 +310,13 @@ const CreatePackage: React.FC = () => {
                                                     className="w-28"
                                                     {...register(`pricePairs.${index}.currency` as const, {
                                                         pattern: {
-                                                            value: /^[A-Z]{3}$/,
-                                                            message: 'Must be 3 uppercase letters',
+                                                            value: /^[A-Z]{1,5}$/,
+                                                            message: 'Must be 1 to 5 uppercase letters',
                                                         },
                                                     })}
                                                 />
+
                                                 <TextInput
-                                                    type="number"
                                                     placeholder="Amount"
                                                     {...register(`pricePairs.${index}.amount` as const, {
                                                         min: { value: 0, message: 'Must be ≥ 0' },

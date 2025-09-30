@@ -9,6 +9,7 @@ import developerRoutes from "./modules/developers/routes";
 import subscriptionRoutes from "./modules/subscriptions/routes";
 import projectRoutes from "./modules/projects/routes";
 import packagesRoutes from './modules/packages/routes';
+import paymentRoutes from "./modules/payments/routes";
 import { errorMiddleware } from "./common/middleware/errorMiddleware";
 
 const app = express();
@@ -30,6 +31,7 @@ app.use("/api/v1", developerRoutes);
 app.use('/api/v1', packagesRoutes);
 app.use('/api/v1', subscriptionRoutes);
 app.use("/api/v1", projectRoutes);
+app.use("/api/v1", paymentRoutes);
 
 app.use(errorMiddleware);
 

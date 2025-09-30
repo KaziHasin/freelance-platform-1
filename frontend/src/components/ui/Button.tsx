@@ -44,12 +44,18 @@ const Button: React.FC<ButtonProps> = ({
         warning: 'bg-yellow-500 hover:bg-yellow-600 text-white border-transparent',
         info: 'bg-cyan-500 hover:bg-cyan-600 text-white border-transparent',
 
-        'outline-primary': 'bg-transparent text-blue-700 border-blue-700 hover:bg-blue-50',
-        'outline-secondary': 'bg-transparent text-gray-700 border-gray-700 hover:bg-gray-50',
-        'outline-success': 'bg-transparent text-green-700 border-green-700 hover:bg-green-50',
-        'outline-danger': 'bg-transparent text-red-700 border-red-700 hover:bg-red-50',
-        'outline-warning': 'bg-transparent text-yellow-600 border-yellow-600 hover:bg-yellow-50',
-        'outline-info': 'bg-transparent text-cyan-600 border-cyan-600 hover:bg-cyan-50',
+        "outline-primary":
+            "bg-transparent text-blue-600 border-blue-600 hover:bg-blue-600 hover:text-white",
+        "outline-secondary":
+            "bg-transparent text-gray-600 border-gray-600 hover:bg-gray-600 hover:text-white",
+        "outline-success":
+            "bg-transparent text-green-600 border-green-600 hover:bg-green-600 hover:text-white",
+        "outline-danger":
+            "bg-transparent text-red-600 border-red-600 hover:bg-red-600 hover:text-white",
+        "outline-warning":
+            "bg-transparent text-yellow-600 border-yellow-600 hover:bg-yellow-500 hover:text-white",
+        "outline-info":
+            "bg-transparent text-cyan-600 border-cyan-600 hover:bg-cyan-600 hover:text-white",
     };
 
     const sizeClasses = {

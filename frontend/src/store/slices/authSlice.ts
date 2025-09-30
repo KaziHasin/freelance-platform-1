@@ -54,8 +54,6 @@ const authSlice = createSlice({
         setCredentials: (state, action: PayloadAction<{ user: User; }>) => {
             const { user } = action.payload;
             state.user = user;
-            console.log(state.user);
-
             if (state.user.role === 'ADMIN') {
                 setUser(user);
             } else if (state.user.role === 'CLIENT') {

@@ -5,6 +5,9 @@ import ClientProtectedRoute from "@/components/auth/ClientProtectedRoute";
 
 const Dashboard = lazy(() => import("@/pages/panel/Clients/Dashboard"));
 const Packages = lazy(() => import("@/pages/panel/Clients/Packages"));
+const PlanSelection = lazy(() => import("@/pages/panel/Clients/PlanSelection"));
+const ProcessPayment = lazy(() => import("@/pages/panel/Clients/ProcessPayment"));
+const PaymentResult = lazy(() => import("@/pages/panel/Clients/PaymentResult"));
 
 
 const ClientRoutes = (
@@ -26,6 +29,40 @@ const ClientRoutes = (
                 <ClientProtectedRoute>
                     <Layout>
                         <Packages />
+                    </Layout>
+                </ClientProtectedRoute>
+            }
+        />
+        <Route />
+        <Route
+            path="/client/plan-selection/:id"
+            element={
+                <ClientProtectedRoute>
+                    <Layout>
+                        <PlanSelection />
+                    </Layout>
+                </ClientProtectedRoute>
+            }
+        />
+        <Route />
+        <Route
+            path="/client/process-payment"
+            element={
+                <ClientProtectedRoute>
+                    <Layout>
+                        <ProcessPayment />
+                    </Layout>
+                </ClientProtectedRoute>
+            }
+        />
+        <Route />
+
+        <Route
+            path="/client/payment-result"
+            element={
+                <ClientProtectedRoute>
+                    <Layout>
+                        <PaymentResult />
                     </Layout>
                 </ClientProtectedRoute>
             }

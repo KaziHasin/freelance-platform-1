@@ -4,6 +4,7 @@ export interface Package {
     prices: Record<string, number>;
     projectsPerMonth: number | null;
     contactClicksPerProject: number | null;
+
     notes?: string;
     shortDescription: string,
     footerText: string,
@@ -38,4 +39,8 @@ export interface PricePair {
 export type PackageFormValues = Omit<
     UpdatePackageRequest,
     "prices"
-> & { pricePairs: PricePair[] };
+> & {
+    pricePairs: PricePair[];
+    unlimitedProjects?: boolean;
+    unlimitedClicks?: boolean;
+};

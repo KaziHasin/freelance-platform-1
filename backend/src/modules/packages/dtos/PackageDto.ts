@@ -10,11 +10,12 @@ const PositiveUnlimitedNumber = z
     .union([
         z.number().gt(0, { message: 'Value must be greater than 0' }),
         z.string().transform((v) => (v?.toUpperCase() === 'UNLIMITED' ? 'UNLIMITED' : v)),
+        z.null(),
     ])
-    .refine((v) => typeof v === 'number' || v === 'UNLIMITED', {
-        message: 'Must be a positive number or "UNLIMITED"',
+    .refine((v) => typeof v === 'number' || v === 'UNLIMITED' || v === null, {
+        message: 'Must be a positive number, "UNLIMITED", or null',
     })
-    .transform((v) => (v === 'UNLIMITED' ? null : (v as number)));
+    .transform((v) => (v === 'UNLIMITED' ? null : v as number | null));
 
 
 const PackageBaseSchema = {
@@ -28,8 +29,8 @@ const PackageBaseSchema = {
     features: z
         .array(z.string().min(1, 'Feature cannot be empty'))
         .min(1, 'At least one feature is required')
-        .max(6, 'No more than 6 features are allowed'),
-    notes: z.string().max(200).optional(),
+        .max(8, 'No more than 6 features are allowed'),
+    notes: z.string().max(1500).optional(),
 };
 
 export const CreatePackageDto = z.object({

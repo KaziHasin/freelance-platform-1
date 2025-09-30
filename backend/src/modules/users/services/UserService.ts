@@ -30,8 +30,6 @@ export class UserService {
         }
 
         if (user.role === 'DEVELOPER') {
-            console.log(user.role);
-
             await this.developerService.create({ userId: user._id });
         }
 
