@@ -4,6 +4,7 @@ import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import AdminRoutes from "./AdminRoutes";
 import ClientRoutes from "./ClientRoutes";
 import PublicRoute from "@/components/auth/PublicRoute";
+import DeveloperRoutes from "./DeveloperRoutes";
 
 
 
@@ -44,6 +45,7 @@ const AppRoutes = () => {
                 {/* Grouped Routes */}
                 {AdminRoutes}
                 {ClientRoutes}
+                {DeveloperRoutes}
 
                 {/* Catch-all */}
                 <Route path="*" element={<Navigate to="/" />} />
