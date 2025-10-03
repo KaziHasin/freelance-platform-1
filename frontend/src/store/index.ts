@@ -4,7 +4,8 @@ import { userApi } from './slices/userSlice';
 import { clientApi } from './slices/ClientSlice';
 import { developerApi } from './slices/DeveloperSlice';
 import { packageApi } from './slices/PackageSlice';
-import { paymentApi } from './slices/paymentSlice'
+import { paymentApi } from './slices/PaymentSlice';
+import { subscriptionApi } from './slices/SubscriptionSlice';
 import authReducer from './slices/authSlice';
 import themeReducer from './slices/themeSlice';
 
@@ -18,6 +19,7 @@ export const store = configureStore({
         [developerApi.reducerPath]: developerApi.reducer,
         [packageApi.reducerPath]: packageApi.reducer,
         [paymentApi.reducerPath]: paymentApi.reducer,
+        [subscriptionApi.reducerPath]: subscriptionApi.reducer,
 
     },
     middleware: (getDefaultMiddleware) =>
@@ -28,6 +30,7 @@ export const store = configureStore({
             developerApi.middleware,
             packageApi.middleware,
             paymentApi.middleware,
+            subscriptionApi.middleware,
         ),
 });
 

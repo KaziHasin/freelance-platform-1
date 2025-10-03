@@ -27,7 +27,7 @@ export const menuItems: MenuItem[] = [
     },
     {
         title: "Plans & Billing",
-        path: "/client/plans",
+        path: "/client/plans-billings",
         icon: CreditCardIcon,
     },
     {

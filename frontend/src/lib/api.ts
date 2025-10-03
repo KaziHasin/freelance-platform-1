@@ -53,5 +53,9 @@ export const API_ENDPOINTS = {
     },
     PAYMENT: {
         CHECKOUT: '/payments/checkout',
-    }
+    },
+    SUBSCRIPTIONS: {
+        CLIENT: '/subscriptions/client',
+        CANCEL: (id: string) => `/subscriptions/${id}/cancel`,
+    },
 };

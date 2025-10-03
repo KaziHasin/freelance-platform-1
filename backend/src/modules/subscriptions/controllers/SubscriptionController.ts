@@ -10,8 +10,6 @@ export const createSubscription = [
 
     validate(CreateSubscriptionDto),
     asyncHandler(async (req: Request, res: Response) => {
-        console.log("Request Body:", req.body); // Debugging line
-
         const created = await service.create(req.body);
         res.status(201).json(created);
     }),
@@ -25,6 +23,18 @@ export const listSubscriptions = [
         res.json(result);
     }),
 ];
+
+export const listClientSubscriptions = [
+    validate(ListQueryDto),
+    asyncHandler(async (req: Request, res: Response) => {
+        const clientId = req.user?.id;
+        const { page, limit, status } = req.query as any;
+        if (!clientId) return res.status(400).json({ error: 'Client ID is required' });
+        const result = await service.listByClient(clientId, status, Number(page), Number(limit));
+        res.json(result);
+    }),
+];
+
 
 export const getSubscription = asyncHandler(async (req: Request, res: Response) => {
     const item = await service.get(req.params.id as string);

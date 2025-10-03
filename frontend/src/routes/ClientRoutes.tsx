@@ -8,6 +8,7 @@ const Packages = lazy(() => import("@/pages/panel/Clients/Packages"));
 const PlanSelection = lazy(() => import("@/pages/panel/Clients/PlanSelection"));
 const ProcessPayment = lazy(() => import("@/pages/panel/Clients/ProcessPayment"));
 const PaymentResult = lazy(() => import("@/pages/panel/Clients/PaymentResult"));
+const PlansBillings = lazy(() => import("@/pages/panel/Clients/PlansBillings"));
 
 
 const ClientRoutes = (
@@ -18,6 +19,17 @@ const ClientRoutes = (
                 <ClientProtectedRoute>
                     <Layout>
                         <Dashboard />
+                    </Layout>
+                </ClientProtectedRoute>
+            }
+        />
+        <Route />
+        <Route
+            path="/client/plans-billings"
+            element={
+                <ClientProtectedRoute>
+                    <Layout>
+                        <PlansBillings />
                     </Layout>
                 </ClientProtectedRoute>
             }

@@ -16,8 +16,6 @@ export class SubscriptionRepository {
         return await Subscription.findOne(filter).sort(sort).exec();
     }
     async getActiveSubscription(clientId: Types.ObjectId) {
-        console.log("Client Id", clientId);
-
         return Subscription.findOne({
             clientId,
             status: SubscriptionStatus.ACTIVE,
@@ -29,7 +27,7 @@ export class SubscriptionRepository {
     }
 
     find(filter: any, page = 1, limit = 20) {
-        return Subscription.find(filter).skip((page - 1) * limit).limit(limit).sort({ createdAt: -1 });
+        return Subscription.find(filter).skip((page - 1) * limit).limit(limit).sort({ createdAt: -1 }).populate([{ path: 'packageId' }, { path: 'paymentId' }]);
     }
     count(filter: any) {
         return Subscription.countDocuments(filter);
