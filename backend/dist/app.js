@@ -33,9 +33,9 @@ app.use('/api/v1', routes_4.default);
 app.use("/api/v1", routes_5.default);
 app.use("/api/v1", routes_7.default);
 // Serve React build
-app.use(express_1.default.static(path_1.default.join(__dirname, "../frontend-build")));
+app.use(express_1.default.static(path_1.default.join(__dirname, "../frontend/dist")));
 app.get("*", (req, res) => {
-    res.sendFile(path_1.default.join(__dirname, "../frontend-build/index.html"));
+    res.sendFile(path_1.default.join(__dirname, "../frontend/dist/index.html"));
 });
 app.use(errorMiddleware_1.errorMiddleware);
 exports.default = app;
