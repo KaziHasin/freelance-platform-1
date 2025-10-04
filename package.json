@@ -3,10 +3,11 @@
     "start:frontend": "npm run dev --prefix frontend",
     "start:backend": "npm run dev --prefix backend",
     "dev": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
-    "build": "cd frontend && npm install && npm run build && cd ../backend && npm install && npm run build && cp -r ../frontend/dist ./frontend-build",
+    "build": "cd frontend && npm run build && cd ../backend && npm run build && cpx \"../frontend/dist/**\" \"dist/frontend-build\"",
     "start": "cd backend && npm start"
   },
   "devDependencies": {
-    "concurrently": "^9.2.1"
+    "concurrently": "^9.2.1",
+    "cpx": "^1.5.0"
   }
 }

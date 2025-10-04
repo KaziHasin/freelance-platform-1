@@ -1,5 +1,0 @@
-import{j as r}from"./index-BzeirQbh.js";const s=({label:e,icon:t,id:o,...a})=>{const i=o||a.name||`input-${e.replace(/\s+/g,"-").toLowerCase()}`;return r.jsxs("div",{children:[r.jsx("label",{htmlFor:i,className:"block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2",children:e}),r.jsxs("div",{className:"relative",children:[t&&r.jsx("div",{className:"absolute inset-y-0 left-0 pl-3 flex items-center",children:t}),r.jsx("input",{id:i,...a,className:`w-full ${t?"pl-10":"pl-4"} py-3 border border-gray-200 dark:border-gray-600 rounded-lg 
-                    focus:border-indigo-500 hover:border-indigo-500 
-                    focus:ring-0 focus:outline-none dark:focus:border-indigo-500 
-                    dark:bg-gray-700 dark:text-white 
-                    transition-colors duration-200 ease-in-out`})]})]})},d=e=>e?e.charAt(0).toUpperCase()+e.slice(1):"";function l(e){return e?new Date(e).toLocaleString("en-GB",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit",hour12:!0}):"N/A"}export{s as E,d as c,l as f};

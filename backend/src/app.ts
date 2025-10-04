@@ -35,10 +35,10 @@ app.use("/api/v1", projectRoutes);
 app.use("/api/v1", paymentRoutes);
 
 // Serve React build
-app.use(express.static(path.join(__dirname, "../frontend/dist")));
+app.use(express.static(path.join(__dirname, "./frontend-build")));
 
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
+app.get("*", (_req, res) => {
+    res.sendFile(path.join(__dirname, "./frontend-build/index.html"));
 });
 
 app.use(errorMiddleware);
