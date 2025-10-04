@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import AdminRoutes from "./AdminRoutes";
 import ClientRoutes from "./ClientRoutes";
+
 import PublicRoute from "@/components/auth/PublicRoute";
 import DeveloperRoutes from "./DeveloperRoutes";
 
