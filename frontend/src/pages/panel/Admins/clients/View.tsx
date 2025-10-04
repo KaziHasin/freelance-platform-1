@@ -1,7 +1,7 @@
 import { EmailInput } from "@/components/forms/inputs/EmailInput";
 import { SelectBox } from "@/components/forms/inputs/SelectBox";
 import { TextInput } from "@/components/forms/inputs/TextInput";
-import PageLayout from "@/components/layout/admin/Layout";
+import PageLayout from "@/components/layout/admin/PageLayout";
 import Button from "@/components/ui/Button";
 import Tabs from "@/components/ui/Tabs";
 import { useGetClientQuery, useUpdateClientStatusMutation } from "@/store/slices/ClientSlice";

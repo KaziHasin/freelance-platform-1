@@ -74,7 +74,7 @@ const EditPackage: React.FC = () => {
             });
 
             const features = (data.features || []).map(
-                (f: { value: string }) => f.value
+                (f: { value: string }) => ({ value: f.value })
             );
 
 

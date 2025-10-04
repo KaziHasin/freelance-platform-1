@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import helmet from "helmet";
 import cors from "cors";
+import path from "path";
 import cookieParser from "cookie-parser";
 import usersRoutes from "./modules/users/routes";
 import clientRoutes from "./modules/clients/routes";
@@ -32,6 +33,13 @@ app.use('/api/v1', packagesRoutes);
 app.use('/api/v1', subscriptionRoutes);
 app.use("/api/v1", projectRoutes);
 app.use("/api/v1", paymentRoutes);
+
+// Serve React build
+app.use(express.static(path.join(__dirname, "../frontend-build")));
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend-build/index.html"));
+});
 
 app.use(errorMiddleware);
 

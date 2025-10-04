@@ -1,0 +1,1 @@
+{"version":3,"file":"ClientDto.d.ts","sourceRoot":"","sources":["../../../../src/modules/clients/dtos/ClientDto.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,CAAC,EAAE,MAAM,KAAK,CAAC;AAExB,eAAO,MAAM,sBAAsB;;;;EAA8C,CAAC;AAClF,eAAO,MAAM,eAAe;;;;;;;;;;;;;iBAW1B,CAAC;AAEH,eAAO,MAAM,eAAe;;;;;;;;;;;iBAQ1B,CAAC;AAEH,eAAO,MAAM,YAAY;;;;;;;iBAavB,CAAC"}

@@ -2,7 +2,6 @@
 import { IPaymentProvider } from "./providers/IPaymentProvider";
 import { StripePayment } from "./providers/StripePayment";
 import { RazorpayPayment } from "./providers/RazorpayPayment";
-import { PaypalPayment } from "./providers/PaypalPayment";
 import { PaymentRepository } from "../repositories/PaymentRepository";
 import { SubscriptionRepository } from "@/modules/subscriptions/repositories/SubscriptionRepository";
 import { Types } from 'mongoose';

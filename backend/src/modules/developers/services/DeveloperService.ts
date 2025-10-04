@@ -79,12 +79,12 @@ export class DeveloperService {
 
     async updateVerificationStatus(
         id: string,
-        status: VerificationStatus,
+        status: keyof typeof VerificationStatus,
         adminId: Types.ObjectId
     ) {
         const update = {
             $set: {
-                "verification.status": status.status,
+                "verification.status": VerificationStatus[status],
                 "verification.reviewedBy": adminId,
                 "verification.reviewedAt": new Date(),
             }

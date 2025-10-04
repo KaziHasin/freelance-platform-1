@@ -1,0 +1,13 @@
+import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
+import { lazy } from "react";
+import { Route } from "react-router-dom";
+import Layout from "@/components/layout/client/Layout";
+import ClientProtectedRoute from "@/components/auth/ClientProtectedRoute";
+const Dashboard = lazy(() => import("@/pages/panel/Clients/Dashboard"));
+const Packages = lazy(() => import("@/pages/panel/Clients/Packages"));
+const PlanSelection = lazy(() => import("@/pages/panel/Clients/PlanSelection"));
+const ProcessPayment = lazy(() => import("@/pages/panel/Clients/ProcessPayment"));
+const PaymentResult = lazy(() => import("@/pages/panel/Clients/PaymentResult"));
+const PlansBillings = lazy(() => import("@/pages/panel/Clients/PlansBillings"));
+const ClientRoutes = (_jsxs(_Fragment, { children: [_jsx(Route, { path: "/client", element: _jsx(ClientProtectedRoute, { children: _jsx(Layout, { children: _jsx(Dashboard, {}) }) }) }), _jsx(Route, {}), _jsx(Route, { path: "/client/plans-billings", element: _jsx(ClientProtectedRoute, { children: _jsx(Layout, { children: _jsx(PlansBillings, {}) }) }) }), _jsx(Route, {}), _jsx(Route, { path: "/client/packages", element: _jsx(ClientProtectedRoute, { children: _jsx(Layout, { children: _jsx(Packages, {}) }) }) }), _jsx(Route, {}), _jsx(Route, { path: "/client/plan-selection/:id", element: _jsx(ClientProtectedRoute, { children: _jsx(Layout, { children: _jsx(PlanSelection, {}) }) }) }), _jsx(Route, {}), _jsx(Route, { path: "/client/process-payment", element: _jsx(ClientProtectedRoute, { children: _jsx(Layout, { children: _jsx(ProcessPayment, {}) }) }) }), _jsx(Route, {}), _jsx(Route, { path: "/client/payment-result", element: _jsx(ClientProtectedRoute, { children: _jsx(Layout, { children: _jsx(PaymentResult, {}) }) }) }), _jsx(Route, {})] }));
+export default ClientRoutes;

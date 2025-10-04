@@ -1,0 +1,17 @@
+import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
+import { lazy } from "react";
+import { Route } from "react-router-dom";
+import AdminProtectedRoute from "@/components/auth/AdminProtectedRoute";
+import Layout from "@/components/layout/admin/Layout";
+const Dashboard = lazy(() => import("@/pages/panel/Admins/Dashboard"));
+const Packages = lazy(() => import("@/pages/panel/Admins/packages/Index"));
+const CreatePackage = lazy(() => import("@/pages/panel/Admins/packages/Create"));
+const EditPackage = lazy(() => import("@/pages/panel/Admins/packages/Edit"));
+const Users = lazy(() => import("@/pages/panel/Admins/users/Index"));
+const UserProfile = lazy(() => import("@/pages/panel/Admins/users/Profile"));
+const Clients = lazy(() => import('@/pages/panel/Admins/clients/Index'));
+const ClientView = lazy(() => import('@/pages/panel/Admins/clients/View'));
+const Developers = lazy(() => import('@/pages/panel/Admins/developers/Index'));
+const DeveloperView = lazy(() => import('@/pages/panel/Admins/developers/View'));
+const AdminRoutes = (_jsxs(_Fragment, { children: [_jsx(Route, { path: "/admin", element: _jsx(AdminProtectedRoute, { children: _jsx(Layout, { children: _jsx(Dashboard, {}) }) }) }), _jsx(Route, { path: "/admin/packages", element: _jsx(AdminProtectedRoute, { children: _jsx(Layout, { children: _jsx(Packages, {}) }) }) }), _jsx(Route, { path: "/admin/packages/create", element: _jsx(AdminProtectedRoute, { children: _jsx(Layout, { children: _jsx(CreatePackage, {}) }) }) }), _jsx(Route, { path: "/admin/packages/edit/:id", element: _jsx(AdminProtectedRoute, { children: _jsx(Layout, { children: _jsx(EditPackage, {}) }) }) }), _jsx(Route, { path: "/admin/users", element: _jsx(AdminProtectedRoute, { children: _jsx(Layout, { children: _jsx(Users, {}) }) }) }), _jsx(Route, { path: "/admin/users/profile", element: _jsx(AdminProtectedRoute, { children: _jsx(Layout, { children: _jsx(UserProfile, {}) }) }) }), _jsx(Route, { path: "/admin/users/clients", element: _jsx(AdminProtectedRoute, { children: _jsx(Layout, { children: _jsx(Clients, {}) }) }) }), _jsx(Route, { path: "/admin/users/clients/:id", element: _jsx(AdminProtectedRoute, { children: _jsx(Layout, { children: _jsx(ClientView, {}) }) }) }), _jsx(Route, { path: "/admin/users/developers", element: _jsx(AdminProtectedRoute, { children: _jsx(Layout, { children: _jsx(Developers, {}) }) }) }), _jsx(Route, { path: "/admin/users/developers/:id", element: _jsx(AdminProtectedRoute, { children: _jsx(Layout, { children: _jsx(DeveloperView, {}) }) }) })] }));
+export default AdminRoutes;

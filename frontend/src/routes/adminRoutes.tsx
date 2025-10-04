@@ -8,7 +8,6 @@ const Packages = lazy(() => import("@/pages/panel/Admins/packages/Index"));
 const CreatePackage = lazy(() => import("@/pages/panel/Admins/packages/Create"));
 const EditPackage = lazy(() => import("@/pages/panel/Admins/packages/Edit"));
 const Users = lazy(() => import("@/pages/panel/Admins/users/Index"));
-const CreateUser = lazy(() => import("@/pages/panel/Admins/users/Create"));
 const UserProfile = lazy(() => import("@/pages/panel/Admins/users/Profile"));
 const Clients = lazy(() => import('@/pages/panel/Admins/clients/Index'));
 const ClientView = lazy(() => import('@/pages/panel/Admins/clients/View'));
@@ -67,16 +66,7 @@ const AdminRoutes = (
                 </AdminProtectedRoute>
             }
         />
-        <Route
-            path="/admin/users/create"
-            element={
-                <AdminProtectedRoute>
-                    <Layout>
-                        <CreateUser />
-                    </Layout>
-                </AdminProtectedRoute>
-            }
-        />
+
         <Route
             path="/admin/users/profile"
             element={
