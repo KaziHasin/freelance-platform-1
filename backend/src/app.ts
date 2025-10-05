@@ -24,7 +24,7 @@ app.use(cookieParser());
 
 
 // --- Health Check ---
-app.get("/healthz", (_req, res) => res.json({ status: "ok" }));
+app.get("/health", (_req, res) => res.json({ status: "ok" }));
 
 app.use("/api/v1", usersRoutes);
 app.use("/api/v1", clientRoutes);
@@ -35,11 +35,11 @@ app.use("/api/v1", projectRoutes);
 app.use("/api/v1", paymentRoutes);
 
 // Serve React build
-app.use(express.static(path.join(__dirname, "../frontend/dist")));
+// app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-app.get("*", (_req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
-});
+// app.get("*", (_req, res) => {
+//     res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
+// });
 
 
 app.use(errorMiddleware);

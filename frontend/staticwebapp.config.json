@@ -1,8 +1,0 @@
-{
-    "routes": [
-        {
-            "route": "/api/*",
-            "rewrite": "https://freelance-platform-g8f9d7ggd9d2e7a3.southeastasia-01.azurewebsites.net/api/v1/*"
-        }
-    ]
-}
