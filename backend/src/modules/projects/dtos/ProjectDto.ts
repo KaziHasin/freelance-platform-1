@@ -8,7 +8,7 @@ export const CreateProjectDto = z.object({
     description: z.string().min(10),
     requiredSkillIds: z.array(skillTag).min(1).max(5),
     clientId: z.string().length(24),
-    agreementFileUrl: z.string().url().optional(),
+    // agreementFileUrl: z.string().url().optional(),
   }),
 });
 
@@ -19,7 +19,7 @@ export const UpdateProjectDto = z.object({
       title: z.string().min(3).max(100).optional(),
       description: z.string().min(10).optional(),
       requiredSkillIds: z.array(skillTag).min(1).max(5).optional(),
-      agreementFileUrl: z.string().url().optional(),
+      // agreementFileUrl: z.string().url().optional(),
     })
     .refine((d) => Object.keys(d).length > 0, {
       message: "No fields to update",

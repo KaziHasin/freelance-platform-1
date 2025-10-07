@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { SkillService } from '../services/SkillService';
-import { SkillRepository } from '../repositories/SkillRepository';
 import { asyncHandler } from '@/common/utils/asyncHandler';
 import { StatusCodes } from 'http-status-codes';
 import { ListSkillDto } from '../dtos/SkillDto';
@@ -9,7 +8,6 @@ import { validate } from '@/common/middleware/validate';
 
 
 const skillService = new SkillService();
-const skillRepo = new SkillRepository();
 
 
 export const resolve = [

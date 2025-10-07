@@ -11,6 +11,7 @@ import { authMiddleware } from "@/common/middleware/authMiddleware";
 import { authorize } from "@/common/middleware/authorizeMiddleware";
 import { Role } from "@/common/types/enums";
 import { acceptAssignment, rejectAssignment } from "./controllers/AssignmentRotationController";
+import { upload } from "@/common/utils/upload";
 
 const router = Router();
 

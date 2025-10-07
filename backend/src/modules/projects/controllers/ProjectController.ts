@@ -7,13 +7,17 @@ import {
   ListProjectQueryDto,
 } from "../dtos/ProjectDto";
 import { ProjectService } from "../services/ProjectService";
+import { upload } from "@/common/utils/upload";
 
 const service = new ProjectService();
 
 export const createProject = [
+  upload.single("agreementFileUrl"),
   validate(CreateProjectDto),
   asyncHandler(async (req: Request, res: Response) => {
-    const created = await service.createProject(req.body);
+    console.log("REQ.BODY:", req.body); return;
+
+    const created = await service.createProject(req.body, req.file);
     res.status(201).json(created);
   }),
 ];

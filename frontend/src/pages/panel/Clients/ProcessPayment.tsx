@@ -1,5 +1,5 @@
 import { TextInput } from '@/components/forms/inputs/TextInput';
-import { useCheckoutPaymentMutation } from '@/store/slices/paymentSlice';
+import { useCheckoutPaymentMutation } from '@/store/slices/PaymentSlice';
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getClient } from "@/lib/auth";

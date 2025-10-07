@@ -4,6 +4,7 @@ import Layout from "@/components/layout/client/Layout";
 import ClientProtectedRoute from "@/components/auth/ClientProtectedRoute";
 
 const Dashboard = lazy(() => import("@/pages/panel/Clients/Dashboard"));
+const PostProject = lazy(() => import("@/pages/panel/Clients//projects/PostProject"));
 const Packages = lazy(() => import("@/pages/panel/Clients/Packages"));
 const PlanSelection = lazy(() => import("@/pages/panel/Clients/PlanSelection"));
 const ProcessPayment = lazy(() => import("@/pages/panel/Clients/ProcessPayment"));
@@ -19,6 +20,16 @@ const ClientRoutes = (
                 <ClientProtectedRoute>
                     <Layout>
                         <Dashboard />
+                    </Layout>
+                </ClientProtectedRoute>
+            }
+        />
+        <Route
+            path="/client/post-project"
+            element={
+                <ClientProtectedRoute>
+                    <Layout>
+                        <PostProject />
                     </Layout>
                 </ClientProtectedRoute>
             }

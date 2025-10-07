@@ -58,4 +58,15 @@ export const API_ENDPOINTS = {
         CLIENT: '/subscriptions/client',
         CANCEL: (id: string) => `/subscriptions/${id}/cancel`,
     },
+    SKILLS: {
+        LIST: "/skills",
+        RESOLVE: "/skills/resolve",
+    },
+    PROJECTS: {
+        LIST: "/projects",
+        CREATE: "/projects",
+        DETAIL: (id: string) => `/projects/${id}`,
+        UPDATE: (id: string) => `/projects/${id}`,
+        DELETE: (id: string) => `/projects/${id}`
+    },
 };

@@ -5,8 +5,12 @@ import RecentActivity from '@/components/clients/RecentActivity';
 import TopFreelancers from '@/components/clients/TopFreelancers';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import SpendingChart from '@/components/clients/SpendingChart';
+import { useNavigate } from 'react-router-dom';
+import Button from '@/components/ui/Button';
 
-const Dashboard = () => {
+const Dashboard: React.FC = () => {
+
+    const navigate = useNavigate();
     return (
         <div className="space-y-6">
             <div className="mx-auto">
@@ -17,13 +21,13 @@ const Dashboard = () => {
                             Welcome back! Here's what's happening with your projects.
                         </p>
                     </div>
-                    <button
-                        type="button"
-                        className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                    <Button
+                        onClick={() => navigate('/client/post-project')}
+                        variant="success"
                     >
                         <PlusIcon className="-ml-1 mr-2 h-5 w-5 dark:text-gray-200" />
-                        Post New Project
-                    </button>
+                        Post Project
+                    </Button>
                 </div>
 
                 {/* Stats Cards */}

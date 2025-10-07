@@ -14,11 +14,10 @@ export class ProjectService {
   ) { }
 
 
-  async createProject(data: any) {
+  async createProject(data: any, file?: Express.Multer.File) {
 
     const clientId = data.clientId;
     const subscription = await this.subscriptionRepo.getActiveSubscription(clientId as Types.ObjectId);
-    console.log("subscription", subscription);
 
     if (!subscription) {
       throw new Error("You do not have an active subscription.");
@@ -34,9 +33,9 @@ export class ProjectService {
           $lte: subscription.endDate || new Date()
         }
       });
-      // if (projectCount >= 1) {
-      //   throw new Error("Free trial users can only post 1 project.");
-      // }
+      if (projectCount >= 1) {
+        throw new Error("Free trial users can only post 1 project.");
+      }
     }
 
     if (pkg.projectsPerMonth !== null) {
@@ -49,12 +48,17 @@ export class ProjectService {
         createdAt: { $gte: startOfMonth }
       });
 
-      // if (projectCount >= pkg.projectsPerMonth) {
-      //   throw new Error(`Your package allows only ${pkg.projectsPerMonth} projects per month.`);
-      // }
+      if (projectCount >= pkg.projectsPerMonth) {
+        throw new Error(`Your package allows only ${pkg.projectsPerMonth} projects per month.`);
+      }
     }
     const requiredSkillIds = await this.skillService.resolveSkillIds(data.requiredSkillIds);
+
+    if (file) {
+      data.agreementFileUrl = `/uploads/${file.filename}`;
+    }
     const toCreate = { ...data, requiredSkillIds };
+
     const project = await this.projectRepo.create(toCreate);
 
     const assignment = await this.assignmentRotation.assignOrRotate((project._id as Types.ObjectId).toString(), requiredSkillIds, data.preferredLevel);

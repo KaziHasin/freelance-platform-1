@@ -4,6 +4,8 @@ import { userApi } from './slices/userSlice';
 import { clientApi } from './slices/ClientSlice';
 import { developerApi } from './slices/DeveloperSlice';
 import { packageApi } from './slices/PackageSlice';
+import { skillApi } from './slices/SkillSlice';
+import { projectApi } from './slices/ProjectSlice';
 import { paymentApi } from './slices/PaymentSlice';
 import { subscriptionApi } from './slices/SubscriptionSlice';
 import authReducer from './slices/authSlice';
@@ -19,6 +21,8 @@ export const store = configureStore({
         [developerApi.reducerPath]: developerApi.reducer,
         [packageApi.reducerPath]: packageApi.reducer,
         [paymentApi.reducerPath]: paymentApi.reducer,
+        [skillApi.reducerPath]: skillApi.reducer,
+        [projectApi.reducerPath]: projectApi.reducer,
         [subscriptionApi.reducerPath]: subscriptionApi.reducer,
 
     },
@@ -30,6 +34,8 @@ export const store = configureStore({
             developerApi.middleware,
             packageApi.middleware,
             paymentApi.middleware,
+            skillApi.middleware,
+            projectApi.middleware,
             subscriptionApi.middleware,
         ),
 });
