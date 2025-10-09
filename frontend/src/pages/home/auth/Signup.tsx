@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FcGoogle } from 'react-icons/fc';
 import { PhoneIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '@/hooks/useAuth';
@@ -48,9 +47,13 @@ const Signup = () => {
                 provider: 'local',
             };
 
-            const success = await registerUser(payload);
-            if (success) {
-                navigate('/client');
+            const response = await registerUser(payload);
+            if (response && typeof response !== 'boolean') {
+                if (response.user.role === 'CLIENT') {
+                    navigate('/client');
+                } else if (response.user.role === 'DEVELOPER') {
+                    navigate('/developer');
+                }
             }
         } catch (error: any) {
             if (error?.data?.details) {

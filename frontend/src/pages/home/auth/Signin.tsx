@@ -24,7 +24,7 @@ const Signin = () => {
     const { toast } = useToast();
     const location = useLocation();
     const { login, isLoading } = useAuth();
-    const from = location.state?.from?.pathname || '/client';
+    const from = location.state?.from?.pathname;
 
 
     const {
@@ -47,15 +47,20 @@ const Signin = () => {
                 rememberMe: data.rememberMe,
             };
 
-            const success = await login(data.email, data.password);
+            const response = await login(data.email, data.password);
 
-            if (success) {
-                toast({
-                    title: `Login Succeed`,
-                    description: `Login successfully`,
-                    variant: "success",
-                });
-                navigate(from, { replace: true });
+            if (response && typeof response !== 'boolean') {
+                if (from && from !== '/') {
+                    navigate(from, { replace: true });
+                } else {
+                    if (response.user.role === 'CLIENT') {
+                        navigate('/client', { replace: true });
+                    } else if (response.user.role === 'DEVELOPER') {
+                        navigate('/developer', { replace: true });
+                    } else {
+                        navigate('/', { replace: true });
+                    }
+                }
             } else {
                 toast({
                     title: `Login failed`,

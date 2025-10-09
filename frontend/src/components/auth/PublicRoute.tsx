@@ -1,35 +1,40 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { getClient, getUser } from "@/lib/auth";
+import { getUser } from "@/lib/auth";
 import { useGetCurrentUserQuery } from "@/store/slices/authSlice";
+import LoadingSpinner from "../ui/LoadingSpinner";
 
 interface PublicRouteProps {
     children: React.ReactNode;
 }
 
 const PublicRoute: React.FC<PublicRouteProps> = ({ children }) => {
-    const localClient = getClient();
-    const localAdmin = getUser();
+    const localUser = getUser();
 
     const {
         data: serverUser,
         isLoading,
         isError,
     } = useGetCurrentUserQuery(undefined, {
-        skip: !localClient && !localAdmin,
+        skip: !localUser,
     });
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <LoadingSpinner fullScreen={true} />;
     }
 
-    if ((localClient && serverUser?.role === "CLIENT") && !isError) {
+    if ((localUser && serverUser?.role === "ADMIN") && !isError) {
+        return <Navigate to="/admin" replace />;
+    }
+
+    if ((localUser && serverUser?.role === "CLIENT") && !isError) {
         return <Navigate to="/client" replace />;
     }
 
-    if ((localAdmin && serverUser?.role === "ADMIN") && !isError) {
-        return <Navigate to="/admin" replace />;
+    if ((localUser && serverUser?.role === "DEVELOPER") && !isError) {
+        return <Navigate to="/developer" replace />;
     }
+
 
     return <>{children}</>;
 };

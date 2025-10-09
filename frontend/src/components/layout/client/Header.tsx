@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Bars3Icon, BellIcon, Squares2X2Icon, UserCircleIcon, MoonIcon, GlobeAltIcon, BellAlertIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useTheme } from '@/hooks/useTheme';
 import { useNavigate } from 'react-router-dom';
-import { getClient } from '@/lib/auth';
+import { getUser } from '@/lib/auth';
 import { useAuth } from '@/hooks/useAuth';
 
 interface HeaderProps {
@@ -166,8 +166,8 @@ const Header = ({ onMenuClick }: HeaderProps) => {
                                 <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700 flex items-center">
                                     <UserCircleIcon className="h-8 w-8 text-gray-500 dark:text-gray-300 mr-2" />
                                     <div>
-                                        <p className="text-sm font-semibold text-gray-900 dark:text-white">{getClient()?.name}</p>
-                                        <p className="text-xs text-gray-500 dark:text-gray-400">{getClient()?.email}</p>
+                                        <p className="text-sm font-semibold text-gray-900 dark:text-white">{getUser()?.name}</p>
+                                        <p className="text-xs text-gray-500 dark:text-gray-400">{getUser()?.email}</p>
                                     </div>
                                 </div>
                                 <button className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center" onClick={() => navigate('/users/profile')}>

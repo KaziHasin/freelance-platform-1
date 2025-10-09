@@ -9,7 +9,7 @@ import { TextArea } from "@/components/forms/inputs/TextArea";
 import { SelectBox } from "@/components/forms/inputs/SelectBox";
 import Button from "@/components/ui/Button";
 import { DevLevel } from "@/types/enums";
-import { getClient } from "@/lib/auth";
+import { getUser } from "@/lib/auth";
 import { CreateProjectRequest } from "@/types/project";
 
 const PostProject: React.FC = () => {
@@ -38,7 +38,7 @@ const PostProject: React.FC = () => {
             const formData = new FormData();
             formData.append("title", data.title);
             formData.append("description", data.description || "");
-            formData.append("clientId", getClient().id);
+            formData.append("clientId", getUser().id);
 
             if (data.preferredLevel) {
                 formData.append("preferredLevel", data.preferredLevel);

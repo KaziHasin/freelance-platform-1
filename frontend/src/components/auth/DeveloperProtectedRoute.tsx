@@ -5,21 +5,21 @@ import { useGetCurrentUserQuery } from "@/store/slices/authSlice";
 import { getUser } from "@/lib/auth";
 import LoadingSpinner from "../ui/LoadingSpinner";
 
-interface ClientProtectedRouteProps {
+interface DeveloperProtectedRouteProps {
     children: React.ReactNode;
 }
 
-const ClientProtectedRoute: React.FC<ClientProtectedRouteProps> = ({ children }) => {
+const DeveloperProtectedRoute: React.FC<DeveloperProtectedRouteProps> = ({ children }) => {
     const location = useLocation();
 
-    const localClient = getUser();
+    const localDeveloper = getUser();
 
     const {
-        data: serverClient,
+        data: serverDeveloper,
         isLoading,
         isError,
     } = useGetCurrentUserQuery(undefined, {
-        skip: !localClient,
+        skip: !localDeveloper,
     });
 
 
@@ -33,15 +33,15 @@ const ClientProtectedRoute: React.FC<ClientProtectedRouteProps> = ({ children })
             </div>
         );
     }
-    if (!localClient || isError || !serverClient) {
+    if (!localDeveloper || isError || !serverDeveloper) {
         return <Navigate to="/signin" state={{ from: location }} replace />;
     }
 
-    if (serverClient.role !== 'CLIENT') {
+    if (serverDeveloper.role !== 'DEVELOPER') {
         return <Navigate to="/" replace />;
     }
 
     return <>{children}</>;
 };
 
-export default ClientProtectedRoute;
+export default DeveloperProtectedRoute;

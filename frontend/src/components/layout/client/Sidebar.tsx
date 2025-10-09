@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { getClient } from '@/lib/auth'
+import { getUser } from '@/lib/auth'
 import {
     ChevronDownIcon,
     XMarkIcon,
@@ -166,9 +166,9 @@ const Sidebar = ({ collapsed, isMobile = false, onClose }: SidebarProps) => {
                                 className="w-full flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-800 transition-colors duration-200"
                             >
                                 <div className="flex-shrink-0">
-                                    {getClient()?.profileImage ? (
+                                    {getUser()?.profileImage ? (
                                         <img
-                                            src={getClient()?.profileImage}
+                                            src={getUser()?.profileImage}
                                             alt="Profile"
                                             className="h-8 w-8 rounded-full object-cover"
                                         />
@@ -180,10 +180,10 @@ const Sidebar = ({ collapsed, isMobile = false, onClose }: SidebarProps) => {
                                     <>
                                         <div className="flex-1 min-w-0">
                                             <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                                                {getClient()?.name}
+                                                {getUser()?.name}
                                             </p>
                                             <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                                                {getClient()?.email}
+                                                {getUser()?.email}
                                             </p>
                                         </div>
                                     </>

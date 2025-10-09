@@ -2,7 +2,7 @@ import { TextInput } from '@/components/forms/inputs/TextInput';
 import { useCheckoutPaymentMutation } from '@/store/slices/PaymentSlice';
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getClient } from "@/lib/auth";
+import { getUser } from "@/lib/auth";
 import { useForm } from "react-hook-form";
 import Button from '@/components/ui/Button';
 
@@ -49,7 +49,7 @@ const ProcessPayment: React.FC = () => {
                 planInterval: paymentMethod.planInterval,
                 amount: paymentMethod.amount,
                 currency: paymentMethod.currency,
-                clientId: getClient().id,
+                clientId: getUser().id,
                 packageId: paymentMethod.id,
                 packageTitle: paymentMethod.packageTitle,
                 paymentDetails: data,

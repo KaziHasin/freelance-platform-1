@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '@/store';
-import { setCredentials, logout as logoutAction, setLoading, updateUser, useRegisterMutation } from '@/store/slices/authSlice';
+import { setCredentials, logout as logoutAction, setLoading, updateUser, useRegisterMutation, AuthSuccessResponse } from '@/store/slices/authSlice';
 import { useLoginMutation, useLogoutMutation } from '@/store/slices/authSlice';
 
 export const useAuth = () => {
@@ -11,23 +11,22 @@ export const useAuth = () => {
     const [registerMutation] = useRegisterMutation();
     const [logoutMutation] = useLogoutMutation();
 
-    const login = async (email: string, password: string): Promise<boolean> => {
+    const login = async (email: string, password: string): Promise<AuthSuccessResponse | boolean> => {
         dispatch(setLoading(true));
 
         try {
             const response = await loginMutation({ email, password }).unwrap();
-
             dispatch(setCredentials({
                 user: response.user
             }));
-            return true;
+            return response;
         } catch (error) {
             dispatch(setLoading(false));
             return false;
         }
     };
 
-    const register = async (data: any): Promise<boolean> => {
+    const register = async (data: any): Promise<AuthSuccessResponse | boolean> => {
         dispatch(setLoading(true));
 
         try {
@@ -35,7 +34,7 @@ export const useAuth = () => {
             dispatch(setCredentials({
                 user: response.user
             }));
-            return true;
+            return response;
         } catch (error) {
             dispatch(setLoading(false));
             return false;

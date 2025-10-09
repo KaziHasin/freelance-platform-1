@@ -2,7 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { createSlice, } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { API_ENDPOINTS } from '@/lib/api';
-import { setUser, clearAuth, setClient, clearClientAuth } from '@/lib/auth';
+import { setUser, clearAuth } from '@/lib/auth';
 import { baseQueryWithReauth } from '@/lib/baseQueryWithReauth';
 
 // Types
@@ -26,7 +26,8 @@ export interface RegisterRequest {
     provider: string
 }
 
-export interface LoginResponse {
+export interface AuthSuccessResponse {
+    success: boolean
     user: User;
 }
 
@@ -54,19 +55,10 @@ const authSlice = createSlice({
         setCredentials: (state, action: PayloadAction<{ user: User; }>) => {
             const { user } = action.payload;
             state.user = user;
-            if (state.user.role === 'ADMIN') {
-                setUser(user);
-            } else if (state.user.role === 'CLIENT') {
-                setClient(user);
-            }
-
+            setUser(user);
         },
         logout: (state) => {
-            if (state.user.role === 'ADMIN') {
-                clearAuth();
-            } else if (state.user.role === 'CLIENT') {
-                clearClientAuth();
-            }
+            clearAuth();
             state.user = null;
         },
         setLoading: (state, action: PayloadAction<boolean>) => {
@@ -87,7 +79,7 @@ export const authApi = createApi({
     baseQuery: baseQueryWithReauth,
     tagTypes: ['Auth'],
     endpoints: (builder) => ({
-        register: builder.mutation<LoginResponse, RegisterRequest>({
+        register: builder.mutation<AuthSuccessResponse, RegisterRequest>({
             query: (credentials) => ({
                 url: API_ENDPOINTS.AUTH.REGISTER,
                 method: 'POST',
@@ -95,7 +87,7 @@ export const authApi = createApi({
             }),
             invalidatesTags: ['Auth'],
         }),
-        login: builder.mutation<LoginResponse, LoginRequest>({
+        login: builder.mutation<AuthSuccessResponse, LoginRequest>({
             query: (credentials) => ({
                 url: API_ENDPOINTS.AUTH.LOGIN,
                 method: 'POST',

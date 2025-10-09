@@ -35,9 +35,9 @@ const Login = () => {
         setError('');
 
         try {
-            const success = await login(formData.email, formData.password);
+            const response = await login(formData.email, formData.password);
 
-            if (success) {
+            if (response && typeof response !== 'boolean') {
                 toast.success('Login successful!');
                 navigate(from, { replace: true });
             } else {
